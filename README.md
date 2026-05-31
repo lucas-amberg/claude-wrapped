@@ -31,6 +31,7 @@ claude-wrapped --month 2026-05          # a specific month
 claude-wrapped --month 2026-05 --no-open
 claude-wrapped --month 2026-05 --output ~/wrapped.png
 claude-wrapped --offline                # skip the pricing fetch (use bundled/cached)
+claude-wrapped --dark                   # render the dark theme
 claude-wrapped --json                   # also print computed stats to stdout
 ```
 
@@ -44,6 +45,7 @@ claude-wrapped --json                   # also print computed stats to stdout
 | `--no-open` | _opens by default_ | Don't open the image after saving. |
 | `--offline` | off | Use cached/bundled pricing only — no network. |
 | `--scale <n>` | `2` | Render scale; 2× → a crisp 2160×2700 PNG. |
+| `--dark` | off | Use the dark theme (warm near-black). |
 | `--json` | off | Print the computed stats as JSON to stdout. |
 
 You can also pass the month positionally: `claude-wrapped 2026-05`.
