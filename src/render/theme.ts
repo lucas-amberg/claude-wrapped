@@ -20,6 +20,58 @@ export const COLOR = {
   footerInk: "#241A12",
 } as const;
 
+export type Palette = { [K in keyof typeof COLOR]: string } & {
+  heroFrom: string; // hero gradient start (lighter coral)
+  heatOnRgb: string; // "R,G,B" triple used inside rgba(...)
+  heatOff: string; // full color for empty heatmap cells
+  famOpus: string;
+  famSonnet: string;
+  famHaiku: string;
+  famFallback: string;
+  pngBg: string; // resvg background + mockup page bg
+};
+
+export const LIGHT: Palette = {
+  ...COLOR,
+  heroFrom: "#E58A63",
+  heatOnRgb: "217,119,87",
+  heatOff: "rgba(42,30,22,0.05)",
+  famOpus: COLOR.coral,
+  famSonnet: COLOR.peach,
+  famHaiku: COLOR.cocoa,
+  famFallback: COLOR.coralDeep,
+  pngBg: COLOR.cream, // #FAF9F5 — unchanged
+};
+
+// Warm near-black: brand-family dark (warm brown-tinted blacks, warm-cream text, coral kept)
+export const DARK: Palette = {
+  cream: "#181210", // root bg — warm near-black
+  paper: "#241B16", // raised panel (models) — lifts off root
+  ink: "#F4EBE1", // primary text — warm cream
+  inkSoft: "rgba(244,235,225,0.58)", // secondary text/labels
+  inkFaint: "rgba(244,235,225,0.12)", // borders + project-track bg
+  coral: "#E08A66", // lifted coral so accents pop on dark
+  coralDeep: "#C2562F", // kept — rich hero gradient end
+  coralSoft: "rgba(224,138,102,0.12)", // projects panel wash
+  peach: "#F2BFA4", // Sonnet dot + footer streak accent
+  cocoa: "#C98A63", // lifted (legacy ref; Haiku now uses famHaiku)
+  creamOn: "#FFFDF9", // light text on coral hero / footer (kept)
+  creamDim: "rgba(255,251,245,0.72)", // kept
+  creamFaint: "rgba(255,251,245,0.26)", // kept
+  footerInk: "#0F0B09", // darkest surface — anchors the footer band
+  heroFrom: "#E58A63", // hero stays a bright coral gradient
+  heatOnRgb: "224,138,102", // active heat = lifted coral rgb
+  heatOff: "rgba(244,235,225,0.06)", // empty cells: faint light-on-dark
+  famOpus: "#E08A66",
+  famSonnet: "#F2BFA4",
+  famHaiku: "#D69B72", // cocoa is illegible on dark → lighter tan, distinct from coral/peach
+  famFallback: "#C2562F",
+  pngBg: "#181210", // == DARK.cream
+};
+
+export type ThemeName = "light" | "dark";
+export const themeFor = (n: ThemeName): Palette => (n === "dark" ? DARK : LIGHT);
+
 export const FONT = {
   display: "Poppins",
   mono: "Space Mono",
