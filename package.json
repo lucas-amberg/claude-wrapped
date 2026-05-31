@@ -33,7 +33,7 @@
   "dependencies": {
     "@resvg/resvg-js": "^2.6.2",
     "cac": "^6.7.14",
-    "open": "^10.1.0",
+    "open": "^11.0.0",
     "satori": "^0.12.1",
     "ultrahtml": "^1.6.0"
   },
