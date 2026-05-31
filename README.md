@@ -1,99 +1,73 @@
 # Claude Wrapped
 
-A **Spotify-Wrapped-style** image of your Claude Code usage. Point it at a month and it
-generates an aesthetic 1080×1350 card — total tokens, spend, cache hit rate, top projects,
-model split, an activity heatmap, and your "coding persona" — then saves it to your Desktop
-and opens it.
+A **Spotify-Wrapped-style** image of your Claude Code usage — total tokens, spend, cache hit
+rate, top projects, model split, an activity heatmap, and your "coding persona" — rendered from
+your local logs, nothing uploaded.
 
-It's self-contained: it reads your local `~/.claude/projects/**/*.jsonl` logs directly and
-computes cost from per-model pricing — the same [LiteLLM](https://github.com/BerriAI/litellm)
-source [`ccusage`](https://github.com/ryoppippi/ccusage) uses — so the numbers line up with
-`ccusage` (see [Accuracy](#accuracy)).
+This repository is a **Turborepo + Bun monorepo** with two apps: the published CLI and a
+marketing/documentation website that shows it off.
 
-![Sample Claude Wrapped card](docs/sample.png)
+<p align="center">
+  <a href="https://claude-wrapped.vercel.app"><b>🌐 View the site →</b></a>
+</p>
 
-## Install
+[![Sample Claude Wrapped card](apps/cli/docs/sample.png)](https://claude-wrapped.vercel.app)
 
-```bash
-# one-off
-npx claude-wrapped
+> The site is **deploy-ready but not yet deployed** — the link above is a placeholder. See
+> [Deploying the site](#deploying-the-site).
 
-# or global
-npm i -g claude-wrapped   # (bun add -g claude-wrapped)
-claude-wrapped
-```
-
-## Usage
+## Try the CLI
 
 ```bash
-claude-wrapped                          # current month → ~/Desktop, then opens it
-claude-wrapped --month 2026-05          # a specific month
-claude-wrapped --month 2026-05 --no-open
-claude-wrapped --month 2026-05 --output ~/wrapped.png
-claude-wrapped --offline                # skip the pricing fetch (use bundled/cached)
-claude-wrapped --dark                   # render the dark theme
-claude-wrapped --json                   # also print computed stats to stdout
+npx claude-wrapped            # current month → ~/Desktop, then opens it
+npx claude-wrapped --dark     # warm near-black dark theme
 ```
 
-### Options
+Full CLI documentation — every flag, how it works, and the `ccusage` accuracy notes — lives in
+**[`apps/cli/README.md`](apps/cli/README.md)** (this is what npm renders).
 
-| Flag | Default | Description |
-|------|---------|-------------|
-| `--month <YYYY-MM>` | current month | Month to summarize. |
-| `--output <path>` | `~/Desktop/claude-wrapped-<month>.png` | Where to save the PNG. |
-| `--timezone <iana>` | system local | Timezone for date grouping (hours, days, streaks). |
-| `--no-open` | _opens by default_ | Don't open the image after saving. |
-| `--offline` | off | Use cached/bundled pricing only — no network. |
-| `--scale <n>` | `2` | Render scale; 2× → a crisp 2160×2700 PNG. |
-| `--dark` | off | Use the dark theme (warm near-black). |
-| `--json` | off | Print the computed stats as JSON to stdout. |
+## Monorepo layout
 
-You can also pass the month positionally: `claude-wrapped 2026-05`.
+```
+claude-wrapped/
+├── apps/
+│   ├── cli/      # the published `claude-wrapped` npm CLI (Bun · tsup · Satori → resvg)
+│   └── web/      # the marketing/docs site (Next.js 16 · Tailwind v4 · static)
+├── turbo.json    # build / dev / typecheck / lint pipeline
+└── package.json  # workspaces + turbo pass-through scripts
+```
 
-If your Claude config lives somewhere non-standard, set `CLAUDE_CONFIG_DIR`.
+The CLI is the source of truth for the design: the website's palette and fonts **mirror**
+[`apps/cli/src/render/theme.ts`](apps/cli/src/render/theme.ts) (its `LIGHT`/`DARK` token sets),
+so the page re-themes light↔dark exactly like the rendered card.
 
-## How it works
-
-1. **Load** — streams every `*.jsonl` under `~/.claude/projects` line-by-line (never loads a
-   file whole), keeps `assistant` messages in the target month, and **dedups** resumed-session
-   copies by `requestId:message.id` (the same key `ccusage` uses).
-2. **Price** — fetches the LiteLLM price table (cached 24h under `~/.claude-wrapped/`, with a
-   bundled fallback so first run / offline still works) and computes cost per record.
-3. **Aggregate** — totals, cache hit rate, top projects (worktrees rolled up to their parent
-   repo), per-model split, peak hour / persona / busiest day / longest streak, and a 7×24
-   activity heatmap — all in your timezone.
-4. **Render** — builds the card with [Satori](https://github.com/vercel/satori) (HTML/flexbox →
-   SVG) and rasterizes it to PNG with [resvg](https://github.com/yisibl/resvg-js). Fonts
-   (Poppins + Space Mono) are embedded in the binary.
-
-## Accuracy
-
-Totals are designed to match `ccusage monthly` for the same month (Claude agents only):
-
-- **Total tokens** and **cache figures** match to ~0.05%.
-- **Cost** matches within ~1%; per-model cost matches `ccusage` to 6 decimals for identical
-  token inputs. Cost uses the flat `cache_creation_input_token_cost` for all cache-creation
-  tokens, exactly like `ccusage` (the 1h cache tier is intentionally not applied).
-- One known difference: `ccusage` counts a small amount (~1%) more **output tokens** than a
-  canonical `requestId:message.id` dedup yields; this is immaterial to the headline figures
-  (output is a tiny slice of total tokens) and doesn't affect tokens/cost beyond the ~1% band.
-- `ccusage` buckets *monthly* totals by UTC; Claude Wrapped defaults to your **local** timezone
-  (so "your May" is genuinely your local May). Pass `--timezone UTC` to match `ccusage` exactly.
-
-## Development
+## Quick start
 
 ```bash
-bun install
-bun run build                 # tsup → dist/cli.js
-
-# fast iteration (no build needed — fonts read from disk):
-bun dev/stats.ts  2026-05     # dump WrappedStats JSON
-bun dev/render.ts             # render mockup/satori.png from /tmp/stats-local.json
-bun dev/mockup.ts             # write mockup/index.html (browser preview, fonts inlined)
+bun install        # installs every workspace from the repo root
+bun run dev        # turbo: runs the CLI watcher + the website (localhost:3000)
+bun run build      # turbo: builds apps/cli/dist + apps/web/.next
+bun run typecheck  # turbo: typechecks both apps
+bun run lint       # turbo: lints the web app
 ```
 
-The card layout lives in `src/render/card-markup.ts` and is shared verbatim between the HTML
-mockup and the Satori renderer, so the preview can't drift from the output.
+Work on one app at a time:
+
+```bash
+bun --filter claude-wrapped dev   # CLI only (tsup --watch)
+bun --filter web dev              # website only (next dev)
+```
+
+## Deploying the site
+
+The site is a static Next.js app, ready for [Vercel](https://vercel.com):
+
+1. Import the repo into Vercel.
+2. Set **Root Directory** to `apps/web` (Vercel auto-detects Next.js + Bun from there).
+3. Deploy. No environment variables are required — the site is fully static.
+
+Then update the placeholder URLs above and in
+[`apps/web/app/layout.tsx`](apps/web/app/layout.tsx) (or set `NEXT_PUBLIC_SITE_URL`).
 
 ## License
 

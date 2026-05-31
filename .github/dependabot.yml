@@ -1,7 +1,10 @@
 version: 2
 updates:
-  - package-ecosystem: "npm" # covers package.json / Bun
-    directory: "/"
+  - package-ecosystem: "npm" # covers package.json / Bun across the monorepo
+    directories:
+      - "/" # root: turbo + workspace tooling
+      - "/apps/cli" # the published CLI
+      - "/apps/web" # the Next.js marketing/docs site
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
