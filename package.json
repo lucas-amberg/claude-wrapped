@@ -38,7 +38,7 @@
     "ultrahtml": "^1.6.0"
   },
   "devDependencies": {
-    "@types/node": "^22.10.0",
+    "@types/node": "^25.9.1",
     "tsup": "^8.3.5",
     "typescript": "^5.7.2"
   }
