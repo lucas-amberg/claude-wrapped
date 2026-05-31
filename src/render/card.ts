@@ -2,7 +2,7 @@ import satori from "satori";
 import { parse, ELEMENT_NODE, TEXT_NODE } from "ultrahtml";
 import type { WrappedStats } from "../types.js";
 import { buildCardMarkup } from "./card-markup.js";
-import { WIDTH, HEIGHT } from "./theme.js";
+import { WIDTH, HEIGHT, LIGHT, type Palette } from "./theme.js";
 
 export interface FontSpec {
   name: string;
@@ -85,8 +85,12 @@ function htmlToVNode(markup: string): VNode {
 }
 
 /** Render the wrapped card to an SVG string via Satori. */
-export async function renderSvg(stats: WrappedStats, fonts: FontSpec[]): Promise<string> {
-  const vnode = htmlToVNode(buildCardMarkup(stats));
+export async function renderSvg(
+  stats: WrappedStats,
+  fonts: FontSpec[],
+  theme: Palette = LIGHT,
+): Promise<string> {
+  const vnode = htmlToVNode(buildCardMarkup(stats, theme));
   return satori(vnode as Parameters<typeof satori>[0], {
     width: WIDTH,
     height: HEIGHT,

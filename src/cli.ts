@@ -9,7 +9,7 @@ import { aggregate } from "./data/aggregate.js";
 import { renderSvg } from "./render/card.js";
 import { svgToPng } from "./render/png.js";
 import { SATORI_FONTS } from "./render/fonts.js";
-import { fmtCompact, fmtMoney0, fmtPct1 } from "./render/theme.js";
+import { fmtCompact, fmtMoney0, fmtPct1, themeFor } from "./render/theme.js";
 
 const VERSION = "0.1.0";
 const systemTz = () => Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -33,6 +33,7 @@ interface Options {
   offline: boolean;
   scale?: number | string;
   json?: boolean;
+  dark?: boolean;
 }
 
 const cli = cac("claude-wrapped");
@@ -45,8 +46,10 @@ cli
   .option("--no-open", "Don't open the image after saving")
   .option("--offline", "Use cached/bundled pricing only (no network fetch)")
   .option("--scale <n>", "Render scale for crispness (default: 2)")
+  .option("--dark", "Use the dark theme")
   .option("--json", "Also print the computed stats as JSON to stdout")
   .example("  claude-wrapped")
+  .example("  claude-wrapped --dark")
   .example("  claude-wrapped --month 2026-05 --no-open")
   .example("  claude-wrapped --month 2026-05 --output ~/wrapped.png")
   .action(async (monthArg: string | undefined, opts: Options) => {
@@ -80,9 +83,10 @@ cli
 
     if (opts.json) process.stdout.write(JSON.stringify(stats, null, 2) + "\n");
 
-    const svg = await renderSvg(stats, SATORI_FONTS);
+    const theme = themeFor(opts.dark ? "dark" : "light");
+    const svg = await renderSvg(stats, SATORI_FONTS, theme);
     const scale = Number(opts.scale) || 2;
-    const png = svgToPng(svg, scale);
+    const png = svgToPng(svg, scale, theme.pngBg);
 
     const output = opts.output
       ? resolve(opts.output)
