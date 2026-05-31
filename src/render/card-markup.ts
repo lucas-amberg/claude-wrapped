@@ -1,7 +1,7 @@
 import type { WrappedStats } from "../types.js";
 import {
-  COLOR as C,
   FONT as F,
+  LIGHT,
   WIDTH,
   HEIGHT,
   fmtCompact,
@@ -11,6 +11,7 @@ import {
   fmtPct1,
   fmtShare,
   fmtThousands,
+  type Palette,
 } from "./theme.js";
 import { claudeLogoImg } from "./logo.js";
 
@@ -25,13 +26,6 @@ const row = (style: string, children = "") =>
 const col = (style: string, children = "") =>
   div(`display:flex;flex-direction:column;${style}`, children);
 
-const FAMILY_COLOR: Record<string, string> = {
-  Opus: C.coral,
-  Sonnet: C.peach,
-  Haiku: C.cocoa,
-};
-const familyColor = (m: string) => FAMILY_COLOR[m] ?? C.coralDeep;
-
 // micro uppercase label (uppercased in JS so it works even where Satori ignores text-transform)
 const label = (t: string, color: string, ls = 3, size = 16) =>
   txt(
@@ -39,63 +33,69 @@ const label = (t: string, color: string, ls = 3, size = 16) =>
     t.toUpperCase(),
   );
 
-function heroStat(value: string, lbl: string, align: "flex-start" | "center" | "flex-end") {
-  return col(
-    `align-items:${align};`,
-    txt(
-      `font-family:'${F.display}';font-weight:700;font-size:49px;line-height:1;color:${C.creamOn};`,
-      value,
-    ) +
-      txt(
-        `font-family:'${F.mono}';font-weight:400;font-size:16px;letter-spacing:2px;color:${C.creamDim};margin-top:10px;text-transform:uppercase;`,
-        lbl.toUpperCase(),
-      ),
-  );
-}
+export function buildCardMarkup(s: WrappedStats, theme: Palette = LIGHT): string {
+  const C = theme;
+  const famByModel: Record<string, string> = {
+    Opus: C.famOpus,
+    Sonnet: C.famSonnet,
+    Haiku: C.famHaiku,
+  };
+  const familyColor = (m: string) => famByModel[m] ?? C.famFallback;
 
-function projectRow(rank: number, name: string, value: string, frac: number) {
-  const head = row(
-    "align-items:baseline;justify-content:space-between;width:100%;",
-    row(
-      "align-items:baseline;flex:1;overflow:hidden;",
+  const heroStat = (value: string, lbl: string, align: "flex-start" | "center" | "flex-end") =>
+    col(
+      `align-items:${align};`,
       txt(
-        `font-family:'${F.display}';font-weight:700;font-size:20px;color:${C.coralDeep};width:28px;`,
-        String(rank),
+        `font-family:'${F.display}';font-weight:700;font-size:49px;line-height:1;color:${C.creamOn};`,
+        value,
       ) +
         txt(
-          `font-family:'${F.display}';font-weight:600;font-size:24px;color:${C.ink};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;`,
-          name,
+          `font-family:'${F.mono}';font-weight:400;font-size:16px;letter-spacing:2px;color:${C.creamDim};margin-top:10px;text-transform:uppercase;`,
+          lbl.toUpperCase(),
         ),
-    ) +
-      txt(
-        `font-family:'${F.display}';font-weight:700;font-size:22px;color:${C.ink};margin-left:12px;`,
-        value,
-      ),
-  );
-  const track = div(
-    `display:flex;width:100%;height:8px;border-radius:4px;background:${C.inkFaint};margin-top:8px;`,
-    div(
-      `display:flex;width:${Math.max(3, frac * 100).toFixed(1)}%;height:8px;border-radius:4px;background:linear-gradient(90deg,${C.coral} 0%,${C.coralDeep} 100%);`,
-    ),
-  );
-  return col("margin-bottom:8px;", head + track);
-}
+    );
 
-function legendRow(name: string, color: string, share: string) {
-  return row(
-    "align-items:center;width:100%;margin-bottom:10px;",
-    div(
-      `display:flex;width:13px;height:13px;border-radius:7px;background:${color};margin-right:11px;`,
-    ) +
-      txt(`font-family:'${F.display}';font-weight:600;font-size:20px;color:${C.ink};flex:1;`, name) +
-      txt(
-        `font-family:'${F.mono}';font-weight:700;font-size:17px;color:${C.inkSoft};`,
-        share,
+  const projectRow = (rank: number, name: string, value: string, frac: number) => {
+    const head = row(
+      "align-items:baseline;justify-content:space-between;width:100%;",
+      row(
+        "align-items:baseline;flex:1;overflow:hidden;",
+        txt(
+          `font-family:'${F.display}';font-weight:700;font-size:20px;color:${C.coralDeep};width:28px;`,
+          String(rank),
+        ) +
+          txt(
+            `font-family:'${F.display}';font-weight:600;font-size:24px;color:${C.ink};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;`,
+            name,
+          ),
+      ) +
+        txt(
+          `font-family:'${F.display}';font-weight:700;font-size:22px;color:${C.ink};margin-left:12px;`,
+          value,
+        ),
+    );
+    const track = div(
+      `display:flex;width:100%;height:8px;border-radius:4px;background:${C.inkFaint};margin-top:8px;`,
+      div(
+        `display:flex;width:${Math.max(3, frac * 100).toFixed(1)}%;height:8px;border-radius:4px;background:linear-gradient(90deg,${C.coral} 0%,${C.coralDeep} 100%);`,
       ),
-  );
-}
+    );
+    return col("margin-bottom:8px;", head + track);
+  };
 
-export function buildCardMarkup(s: WrappedStats): string {
+  const legendRow = (name: string, color: string, share: string) =>
+    row(
+      "align-items:center;width:100%;margin-bottom:10px;",
+      div(
+        `display:flex;width:13px;height:13px;border-radius:7px;background:${color};margin-right:11px;`,
+      ) +
+        txt(`font-family:'${F.display}';font-weight:600;font-size:20px;color:${C.ink};flex:1;`, name) +
+        txt(
+          `font-family:'${F.mono}';font-weight:700;font-size:17px;color:${C.inkSoft};`,
+          share,
+        ),
+    );
+
   // ---- header ----
   const header = row(
     "align-items:center;justify-content:space-between;width:100%;",
@@ -107,7 +107,7 @@ export function buildCardMarkup(s: WrappedStats): string {
 
   // ---- hero ----
   const hero = col(
-    `background:linear-gradient(135deg,#E58A63 0%,${C.coralDeep} 100%);border-radius:32px;padding:40px 48px 38px 48px;`,
+    `background:linear-gradient(135deg,${C.heroFrom} 0%,${C.coralDeep} 100%);border-radius:32px;padding:40px 48px 38px 48px;`,
     label("Total Tokens", C.creamDim, 4, 19) +
       txt(
         `font-family:'${F.display}';font-weight:900;font-size:138px;line-height:1;letter-spacing:-4px;color:${C.creamOn};margin-top:8px;`,
@@ -208,8 +208,8 @@ export function buildCardMarkup(s: WrappedStats): string {
               const count = s.heatmapCounts[ri][ci];
               const bg =
                 count > 0
-                  ? `rgba(217,119,87,${(0.16 + 0.84 * v).toFixed(3)})`
-                  : "rgba(42,30,22,0.05)";
+                  ? `rgba(${C.heatOnRgb},${(0.16 + 0.84 * v).toFixed(3)})`
+                  : C.heatOff;
               return div(
                 `display:flex;flex:1;height:${CELL}px;border-radius:5px;background:${bg};${ci > 0 ? `margin-left:${GAP}px;` : ""}`,
               );
