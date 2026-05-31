@@ -10,7 +10,11 @@ computes cost from per-model pricing — the same [LiteLLM](https://github.com/B
 source [`ccusage`](https://github.com/ryoppippi/ccusage) uses — so the numbers line up with
 `ccusage` (see [Accuracy](#accuracy)).
 
-![Sample Claude Wrapped card](docs/sample.png)
+<p align="center">
+  <img src="docs/sample.png" width="49%" alt="Claude Wrapped sample — light theme" />
+  <img src="docs/sample-dark.png" width="49%" alt="Claude Wrapped sample — dark theme" />
+</p>
+<p align="center"><sub>Sample cards (illustrative data) — default and <code>--dark</code> themes.</sub></p>
 
 ## Install
 
