@@ -11,7 +11,11 @@ marketing/documentation website that shows it off.
   <a href="https://claude-wrapped.vercel.app"><b>🌐 View the site →</b></a>
 </p>
 
-[![Sample Claude Wrapped card](apps/cli/docs/sample.png)](https://claude-wrapped.vercel.app)
+<p align="center">
+  <img src="apps/cli/docs/sample.png" width="49%" alt="Claude Wrapped sample — light theme" />
+  <img src="apps/cli/docs/sample-dark.png" width="49%" alt="Claude Wrapped sample — dark theme" />
+</p>
+<p align="center"><sub>Sample cards (illustrative data) — default and <code>--dark</code> themes.</sub></p>
 
 > The site is **deploy-ready but not yet deployed** — the link above is a placeholder. See
 > [Deploying the site](#deploying-the-site).
