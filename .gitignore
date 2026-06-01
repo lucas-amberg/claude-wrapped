@@ -1,6 +1,9 @@
 node_modules/
 dist/
 
+# test coverage (turbo `test` task output)
+coverage/
+
 # next.js / turbo / vercel
 .next/
 .turbo/

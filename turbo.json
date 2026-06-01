@@ -11,6 +11,9 @@
       "persistent": true
     },
     "typecheck": {},
-    "lint": {}
+    "lint": {},
+    "test": {
+      "outputs": ["coverage/**"]
+    }
   }
 }
