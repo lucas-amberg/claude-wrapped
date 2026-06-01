@@ -16,7 +16,7 @@ function useCopy() {
   return { copied, copy };
 }
 
-/** Compact nav chip — copies `npx claude-wrapped`. */
+/** Compact nav chip — copies `npx claude-wrapped-cli`. */
 export function CommandChip() {
   const { copied, copy } = useCopy();
   return (

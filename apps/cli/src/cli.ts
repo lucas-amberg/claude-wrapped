@@ -10,8 +10,8 @@ import { renderSvg } from "./render/card.js";
 import { svgToPng } from "./render/png.js";
 import { SATORI_FONTS } from "./render/fonts.js";
 import { fmtCompact, fmtMoney0, fmtPct1, themeFor } from "./render/theme.js";
+import { name as pkgName, version } from "../package.json";
 
-const VERSION = "0.1.0";
 const systemTz = () => Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 function currentMonth(tz: string): string {
@@ -36,7 +36,7 @@ interface Options {
   dark?: boolean;
 }
 
-const cli = cac("claude-wrapped");
+const cli = cac(pkgName);
 
 cli
   .command("[month]", "Generate a Spotify-Wrapped-style image of your Claude Code usage")
@@ -48,10 +48,10 @@ cli
   .option("--scale <n>", "Render scale for crispness (default: 2)")
   .option("--dark", "Use the dark theme")
   .option("--json", "Also print the computed stats as JSON to stdout")
-  .example("  claude-wrapped")
-  .example("  claude-wrapped --dark")
-  .example("  claude-wrapped --month 2026-05 --no-open")
-  .example("  claude-wrapped --month 2026-05 --output ~/wrapped.png")
+  .example(`  ${pkgName}`)
+  .example(`  ${pkgName} --dark`)
+  .example(`  ${pkgName} --month 2026-05 --no-open`)
+  .example(`  ${pkgName} --month 2026-05 --output ~/wrapped.png`)
   .action(async (monthArg: string | undefined, opts: Options) => {
     const tz = opts.timezone || systemTz();
     const month = opts.month || monthArg || currentMonth(tz);
@@ -109,7 +109,7 @@ cli
   });
 
 cli.help();
-cli.version(VERSION);
+cli.version(version);
 
 // cac's parse() fires the async action as a floating promise, so its rejections
 // must be caught off runMatchedCommand() — a plain try/catch around parse() only

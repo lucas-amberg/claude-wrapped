@@ -1,19 +1,32 @@
 {
-  "name": "claude-wrapped",
+  "name": "claude-wrapped-cli",
   "version": "0.1.0",
   "description": "Spotify-Wrapped-style summary image of your Claude Code usage.",
+  "author": "Lucas Amberg",
+  "homepage": "https://claude-wrapped-zeta.vercel.app",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lucas-amberg/claude-wrapped.git",
+    "directory": "apps/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/lucas-amberg/claude-wrapped/issues"
+  },
   "type": "module",
   "bin": {
-    "claude-wrapped": "dist/cli.js"
+    "claude-wrapped-cli": "dist/cli.js"
   },
   "files": [
     "dist",
     "docs/sample.png",
     "docs/sample-dark.png",
-    "README.md"
+    "README.md",
+    "LICENSE",
+    "OFL.txt"
   ],
   "scripts": {
     "build": "tsup",
+    "prepack": "tsup",
     "dev": "tsup --watch",
     "start": "node dist/cli.js",
     "typecheck": "tsc --noEmit",
