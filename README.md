@@ -22,8 +22,6 @@ your local logs, nothing uploaded.
 ![Tailwind v4](https://img.shields.io/badge/Tailwind%20v4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
 ![Satori](https://img.shields.io/badge/Satori-0B0B0F?style=for-the-badge&logo=vercel&logoColor=white)
 
-<a href="https://claude-wrapped.vercel.app"><b>🌐 View the site →</b></a>
-
 <p align="center">
   <a href="https://claude-wrapped-zeta.vercel.app"><b>🌐 View the site →</b></a>
 </p>
