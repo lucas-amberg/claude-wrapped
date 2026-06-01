@@ -16,7 +16,7 @@ const spaceMono = Space_Mono({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://claude-wrapped.vercel.app";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://claude-wrapped-zeta.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
