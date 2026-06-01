@@ -8,6 +8,13 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
+    ignore:
+      # ESLint 10 is not yet supported by the Next.js lint stack:
+      # eslint-config-next pins eslint-plugin-react@^7.37.x, and no released
+      # eslint-plugin-react works with ESLint 10 (it still calls the removed
+      # context.getFilename() API). Re-enable once the ecosystem ships support.
+      - dependency-name: "eslint"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
