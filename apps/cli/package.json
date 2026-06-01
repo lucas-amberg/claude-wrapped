@@ -1,0 +1,46 @@
+{
+  "name": "claude-wrapped",
+  "version": "0.1.0",
+  "description": "Spotify-Wrapped-style summary image of your Claude Code usage.",
+  "type": "module",
+  "bin": {
+    "claude-wrapped": "dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "docs/sample.png",
+    "docs/sample-dark.png",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "start": "node dist/cli.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "wrapped",
+    "ccusage",
+    "cli",
+    "usage",
+    "tokens"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "open": "^11.0.0",
+    "cac": "^7.0.0",
+    "satori": "^0.26.0",
+    "ultrahtml": "^1.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.1",
+    "tsup": "^8.3.5",
+    "typescript": "^6.0.3"
+  }
+}
