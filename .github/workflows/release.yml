@@ -3,7 +3,7 @@ on:
   push:
     tags: ["v*"] # created by `npm version` in apps/cli
 permissions:
-  contents: read
+  contents: write # create the GitHub Release for the pushed tag
   id-token: write # OIDC: tokenless publish + automatic provenance
 jobs:
   publish:
@@ -19,3 +19,7 @@ jobs:
       - run: bun install --frozen-lockfile
       - run: npm publish --access public # prepack builds dist; OIDC tokenless; provenance auto
         working-directory: apps/cli
+      - run: gh release create "$TAG" --title "$TAG" --generate-notes --verify-tag
+        env:
+          GH_TOKEN: ${{ github.token }} # built-in; scoped by `contents: write` above
+          TAG: ${{ github.ref_name }} # the pushed v* tag; via env to avoid run-step injection
