@@ -23,23 +23,23 @@ Anthropic actually bills — so spend is computed from real data, not estimated.
 
 ```bash
 # one-off
-npx claude-wrapped
+npx claude-wrapped-cli
 
 # or global
-npm i -g claude-wrapped   # (bun add -g claude-wrapped)
-claude-wrapped
+npm i -g claude-wrapped-cli   # (bun add -g claude-wrapped-cli)
+claude-wrapped-cli
 ```
 
 ## Usage
 
 ```bash
-claude-wrapped                          # current month → ~/Desktop, then opens it
-claude-wrapped --month 2026-05          # a specific month
-claude-wrapped --month 2026-05 --no-open
-claude-wrapped --month 2026-05 --output ~/wrapped.png
-claude-wrapped --offline                # skip the pricing fetch (use bundled/cached)
-claude-wrapped --dark                   # render the dark theme
-claude-wrapped --json                   # also print computed stats to stdout
+claude-wrapped-cli                          # current month → ~/Desktop, then opens it
+claude-wrapped-cli --month 2026-05          # a specific month
+claude-wrapped-cli --month 2026-05 --no-open
+claude-wrapped-cli --month 2026-05 --output ~/wrapped.png
+claude-wrapped-cli --offline                # skip the pricing fetch (use bundled/cached)
+claude-wrapped-cli --dark                   # render the dark theme
+claude-wrapped-cli --json                   # also print computed stats to stdout
 ```
 
 ### Options
@@ -55,7 +55,7 @@ claude-wrapped --json                   # also print computed stats to stdout
 | `--dark` | off | Use the dark theme (warm near-black). |
 | `--json` | off | Print the computed stats as JSON to stdout. |
 
-You can also pass the month positionally: `claude-wrapped 2026-05`.
+You can also pass the month positionally: `claude-wrapped-cli 2026-05`.
 
 If your Claude config lives somewhere non-standard, set `CLAUDE_CONFIG_DIR`.
 

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Reveal } from "./Reveal";
 import { SectionHead } from "./SectionHead";
-import { TABS, OPTIONS } from "@/lib/content";
+import { TABS, OPTIONS, PKG } from "@/lib/content";
 
 type TabKey = keyof typeof TABS;
 const TAB_KEYS = Object.keys(TABS) as TabKey[];
@@ -23,7 +23,7 @@ export function Install() {
           <Reveal>
             <div className="term">
               <div className="term-bar">
-                <span className="name mono">claude-wrapped</span>
+                <span className="name mono">{PKG}</span>
                 <div className="term-tabs" role="tablist" aria-label="Package manager">
                   {TAB_KEYS.map((k) => (
                     <button
