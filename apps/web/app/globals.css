@@ -236,7 +236,7 @@ a {
    ============================================================================= */
 .hero {
   position: relative;
-  padding-block: clamp(3.5rem, 8vw, 7rem) clamp(3rem, 6vw, 5.5rem);
+  padding-block: clamp(1.5rem, 3.5vw, 2.5rem);
   overflow: clip;
 }
 .hero-glow {
@@ -261,7 +261,7 @@ a {
   font-weight: 700;
   line-height: 1.0;
   letter-spacing: -0.03em;
-  margin: 1.3rem 0 0;
+  margin: 1.1rem 0 0;
   text-wrap: balance;
 }
 .display .em {
@@ -271,7 +271,7 @@ a {
   font-size: clamp(1.05rem, 1.4vw, 1.22rem);
   color: var(--ink-soft);
   max-width: 40ch;
-  margin-top: 1.4rem;
+  margin-top: 1.2rem;
   line-height: 1.6;
 }
 .cta {
@@ -279,7 +279,7 @@ a {
   flex-wrap: wrap;
   align-items: center;
   gap: 0.8rem;
-  margin-top: 2rem;
+  margin-top: 1.6rem;
 }
 .btn-primary {
   display: inline-flex;
@@ -333,7 +333,7 @@ a {
   transform: translateY(-2px);
 }
 .meta {
-  margin-top: 1.8rem;
+  margin-top: 1.4rem;
   font-family: var(--font-mono), monospace;
   font-size: 0.74rem;
   letter-spacing: 0.02em;
