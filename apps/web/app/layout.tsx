@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   title: "Claude Wrapped — Your month in Claude Code, beautifully wrapped",
   description:
     "A Spotify-Wrapped-style card of your Claude Code usage — total tokens, spend, cache hit rate, top projects, model split, an activity heatmap and your coding persona. Generated from your local logs, nothing uploaded.",
-  keywords: ["claude", "claude code", "wrapped", "ccusage", "tokens", "usage", "cli"],
+  keywords: ["claude", "claude code", "wrapped", "tokens", "usage", "cli"],
   authors: [{ name: "Lucas Amberg" }],
   openGraph: {
     title: "Claude Wrapped",

@@ -45,7 +45,7 @@ npx claude-wrapped            # current month → ~/Desktop, then opens it
 npx claude-wrapped --dark     # warm near-black dark theme
 ```
 
-Full CLI documentation — every flag, how it works, and the `ccusage` accuracy notes — lives in
+Full CLI documentation — every flag and how it works — lives in
 **[`apps/cli/README.md`](apps/cli/README.md)** (this is what npm renders).
 
 ## Monorepo layout
@@ -91,6 +91,11 @@ The site is a static Next.js app, ready for [Vercel](https://vercel.com):
 The live deployment is **<https://claude-wrapped-zeta.vercel.app>**. To self-host under a
 different URL, set `NEXT_PUBLIC_SITE_URL` (it feeds the metadata/OG defaults in
 [`apps/web/app/layout.tsx`](apps/web/app/layout.tsx)).
+
+## Acknowledgements
+
+Inspired by [`ccusage`](https://github.com/ryoppippi/ccusage) — the project that got me poking
+at Claude Code usage in the first place. Both read the same LiteLLM pricing source.
 
 ## License
 
