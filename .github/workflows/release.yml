@@ -1,10 +1,18 @@
 name: Release CLI
+# Releases are version-driven: merge a PR that bumps apps/cli/package.json's
+# "version" and this workflow publishes that version to npm, tags v<version>,
+# and cuts the GitHub Release — all in one run. No manual git tagging required
+# (which branch protection on main would block anyway). The release/publish is
+# idempotent: if the tag already exists or the version is already on npm, it
+# skips. Use the workflow_dispatch button to re-run a release on demand.
 on:
   push:
-    tags: ["v*"] # created by `npm version` in apps/cli
+    branches: [main]
+    paths: ["apps/cli/package.json"]
+  workflow_dispatch: {}
 permissions:
-  contents: write # create the GitHub Release for the pushed tag
-  id-token: write # OIDC: tokenless publish + automatic provenance
+  contents: write # push the v<version> tag + create the GitHub Release
+  id-token: write # OIDC: tokenless npm publish + automatic provenance
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -16,10 +24,39 @@ jobs:
           node-version: "24" # ships npm 11.x; trusted publishing needs node>=22.14
           registry-url: "https://registry.npmjs.org"
       - run: npm install -g npm@latest # guarantee npm >= 11.5.1
-      - run: bun install --frozen-lockfile
-      - run: npm publish --access public # prepack builds dist; OIDC tokenless; provenance auto
+      - name: Decide whether to release
+        id: gate
+        run: |
+          VERSION=$(node -p "require('./apps/cli/package.json').version")
+          TAG="v$VERSION"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          if git ls-remote --exit-code --tags origin "refs/tags/$TAG" >/dev/null 2>&1; then
+            echo "::notice::Tag $TAG already exists — nothing to release."
+            echo "release=false" >> "$GITHUB_OUTPUT"
+          elif npm view "claude-wrapped-cli@$VERSION" version >/dev/null 2>&1; then
+            echo "::notice::claude-wrapped-cli@$VERSION already on npm — nothing to release."
+            echo "release=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::Releasing claude-wrapped-cli@$VERSION ($TAG)."
+            echo "release=true" >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.gate.outputs.release == 'true'
+        run: bun install --frozen-lockfile
+      - if: steps.gate.outputs.release == 'true'
+        run: npm publish --access public # prepack builds dist; OIDC tokenless; provenance auto
         working-directory: apps/cli
-      - run: gh release create "$TAG" --title "$TAG" --generate-notes --verify-tag
+      - name: Tag and create GitHub Release
+        if: steps.gate.outputs.release == 'true'
         env:
           GH_TOKEN: ${{ github.token }} # built-in; scoped by `contents: write` above
-          TAG: ${{ github.ref_name }} # the pushed v* tag; via env to avoid run-step injection
+          TAG: ${{ steps.gate.outputs.tag }}
+        run: |
+          # Tag AFTER a successful publish so a publish failure leaves no tag to
+          # block a retry. This tag push won't re-trigger the workflow (built-in
+          # token + the trigger keys off branch/path, not tags).
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "$TAG" -m "claude-wrapped-cli $TAG"
+          git push origin "$TAG"
+          gh release create "$TAG" --title "$TAG" --generate-notes --verify-tag
