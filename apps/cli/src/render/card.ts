@@ -24,7 +24,7 @@ const toVal = (v: string): StyleValue =>
  * versions) lacks `border`/`border-top` shorthands, so expand those to
  * longhands; unitless numbers become numbers (flex, line-height, opacity).
  */
-function expandStyle(style: string): Record<string, StyleValue> {
+export function expandStyle(style: string): Record<string, StyleValue> {
   const out: Record<string, StyleValue> = {};
   for (const decl of style.split(";")) {
     const idx = decl.indexOf(":");
@@ -55,10 +55,10 @@ interface ParsedNode {
 
 // ultrahtml doesn't decode entities in text nodes (the browser DOM does), so
 // reverse the escaping applied when building the markup.
-const decodeEntities = (t: string): string =>
+export const decodeEntities = (t: string): string =>
   t.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
 
-function convert(node: ParsedNode): VNode {
+export function convert(node: ParsedNode): VNode {
   if (node.type === TEXT_NODE) return decodeEntities(node.value ?? "");
   const props: Record<string, unknown> = {};
   const attrs = node.attributes ?? {};
@@ -77,7 +77,7 @@ function convert(node: ParsedNode): VNode {
 }
 
 /** Parse a (well-formed, inline-styled) HTML string into a Satori vnode tree. */
-function htmlToVNode(markup: string): VNode {
+export function htmlToVNode(markup: string): VNode {
   const doc = parse(markup) as ParsedNode;
   const root = (doc.children ?? []).find((c) => c.type === ELEMENT_NODE);
   if (!root) throw new Error("card markup produced no root element");
