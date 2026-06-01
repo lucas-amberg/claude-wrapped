@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
 import {
-  ACCURACY,
   FAQ,
   HEAT_CELLS,
   HERO_STATS,
@@ -9,6 +8,8 @@ import {
   NPM_URL,
   OPTIONS,
   PANELS,
+  PEAK_HOUR,
+  PEAK_LABEL,
   PERSONAS,
   REPO_URL,
   STEPS,
@@ -97,11 +98,10 @@ describe("landing-page content invariants", () => {
     }
   });
 
-  it("ACCURACY entries are non-empty with v/l", () => {
-    expect(ACCURACY.length).toBeGreaterThan(0);
-    for (const a of ACCURACY) {
-      expect(a.v.length).toBeGreaterThan(0);
-      expect(a.l.length).toBeGreaterThan(0);
-    }
+  it("PEAK_HOUR is a valid 24h hour and PEAK_LABEL is derived from it", () => {
+    expect(Number.isInteger(PEAK_HOUR)).toBe(true);
+    expect(PEAK_HOUR).toBeGreaterThanOrEqual(0);
+    expect(PEAK_HOUR).toBeLessThanOrEqual(23);
+    expect(PEAK_LABEL).toMatch(/^Peak · \d{1,2} (AM|PM)$/);
   });
 });
