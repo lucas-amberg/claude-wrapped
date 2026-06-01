@@ -768,9 +768,6 @@ a {
   font-size: 0.84rem;
   color: var(--ink-soft);
 }
-.persona[data-active="true"] {
-  background: color-mix(in srgb, var(--coral) 9%, transparent);
-}
 
 /* accuracy */
 .accuracy-grid {

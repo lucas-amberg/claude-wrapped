@@ -1,5 +1,7 @@
-// Static content for the landing page. Headline figures mirror the sample card
-// in apps/cli/docs (kept impersonal — no repo names as site copy).
+// Static content for the landing page. Headline figures (HERO_STATS, MODELS,
+// PEAK_HOUR) mirror the sample card fixture `SAMPLE_STATS` in
+// apps/cli/dev/sample-data.ts — keep them in sync when it changes (kept
+// impersonal here — no repo names as site copy).
 
 export const REPO_URL = "https://github.com/lucas-amberg/claude-wrapped";
 export const NPM_URL = "https://www.npmjs.com/package/claude-wrapped";
@@ -8,10 +10,10 @@ export const NPM_URL = "https://www.npmjs.com/package/claude-wrapped";
 export const INSTALL_CMD = "npx claude-wrapped";
 
 export const HERO_STATS = [
-  { num: "2.97B", lab: "Total tokens", sub: "across 27.7K messages" },
-  { num: "$2,293", lab: "Spent", sub: "computed from LiteLLM pricing" },
-  { num: "95.8%", lab: "Cache hit rate", sub: "served from cache" },
-  { num: "22/31", lab: "Active days", sub: "12-day longest streak" },
+  { num: "1.94B", lab: "Total tokens", sub: "across 18.2K messages" },
+  { num: "$1,480", lab: "Spent", sub: "computed from LiteLLM pricing" },
+  { num: "94.0%", lab: "Cache hit rate", sub: "served from cache" },
+  { num: "27/31", lab: "Active days", sub: "12-day longest streak" },
 ] as const;
 
 export const PANELS: { term: string; desc: string }[] = [
@@ -24,9 +26,9 @@ export const PANELS: { term: string; desc: string }[] = [
 ];
 
 export const MODELS = [
-  { name: "Opus", pct: "96%", varName: "--fam-opus", width: 96 },
+  { name: "Opus", pct: "70%", varName: "--fam-opus", width: 70 },
+  { name: "Sonnet", pct: "27%", varName: "--fam-sonnet", width: 27 },
   { name: "Haiku", pct: "3%", varName: "--fam-haiku", width: 3 },
-  { name: "Sonnet", pct: "<1%", varName: "--fam-sonnet", width: 1 },
 ] as const;
 
 export const BUILT = [
@@ -85,7 +87,7 @@ export const OPTIONS: { flag: string; desc: string }[] = [
 export const PERSONAS = [
   { emoji: "🦉", name: "Night Owl", when: "Peaks after midnight", p: "The repo is quietest exactly when you ship." },
   { emoji: "🐤", name: "Early Bird", when: "Dawn commits", p: "First pull request in before the standup." },
-  { emoji: "☀️", name: "Daylight Coder", when: "Peak · 4 PM", p: "Locked in through the afternoon stretch.", active: true },
+  { emoji: "☀️", name: "Daylight Coder", when: "Peak · 4 PM", p: "Locked in through the afternoon stretch." },
   { emoji: "🌙", name: "Evening Hacker", when: "After dinner", p: "Comes alive for golden-hour debugging." },
 ] as const;
 
@@ -118,15 +120,20 @@ export const FAQ = [
   },
 ] as const;
 
+// The sample card's peak coding hour (24h). Single source for both the heatmap
+// wave below and InsideCard's caption, so the two can never disagree.
+export const PEAK_HOUR = 22;
+const hour12 = (h: number) => `${h % 12 || 12} ${h < 12 ? "AM" : "PM"}`;
+export const PEAK_LABEL = `Peak · ${hour12(PEAK_HOUR)}`; // 22 → "Peak · 10 PM"
+
 // Deterministic 7×24 "when you code" heatmap (no Math.random → no hydration drift).
-// Wave peaking around 4 PM on weekdays, echoing the card's motif. Computed once at
-// module load since the values are static.
+// Wave peaking at PEAK_HOUR on weekdays, echoing the card's Night-Owl motif.
+// Computed once at module load since the values are static.
 function heatCells(): number[] {
   const cells: number[] = [];
   for (let day = 0; day < 7; day++) {
     for (let hour = 0; hour < 24; hour++) {
-      const peak = 16;
-      const dist = Math.abs(hour - peak);
+      const dist = Math.abs(hour - PEAK_HOUR);
       const wave = Math.max(0, 1 - dist / 8);
       const weekend = day >= 5 ? 0.5 : 1;
       const texture = 0.55 + 0.45 * Math.sin((hour + day * 3) * 1.27);
