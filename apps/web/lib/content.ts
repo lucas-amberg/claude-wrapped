@@ -3,11 +3,15 @@
 // apps/cli/dev/sample-data.ts — keep them in sync when it changes (kept
 // impersonal here — no repo names as site copy).
 
+// Published npm package name — single source for the npm link, every install
+// command below, and the terminal-bar label in Install.tsx.
+export const PKG = "claude-wrapped-cli";
+
 export const REPO_URL = "https://github.com/lucas-amberg/claude-wrapped";
-export const NPM_URL = "https://www.npmjs.com/package/claude-wrapped";
+export const NPM_URL = `https://www.npmjs.com/package/${PKG}`;
 
 // Canonical install command — the one the copy button writes to the clipboard.
-export const INSTALL_CMD = "npx claude-wrapped";
+export const INSTALL_CMD = `npx ${PKG}`;
 
 export const HERO_STATS = [
   { num: "1.94B", lab: "Total tokens", sub: "across 18.2K messages" },
@@ -58,18 +62,18 @@ export const STEPS = [
 
 export const TABS = {
   npx: [
-    { p: "$", t: " npx claude-wrapped", c: "" },
+    { p: "$", t: ` npx ${PKG}`, c: "" },
     { p: "", t: "", c: "# current month → ~/Desktop, then opens it" },
     { p: "", t: "", c: "" },
-    { p: "$", t: " npx claude-wrapped", c: " --month 2026-05 --dark" },
+    { p: "$", t: ` npx ${PKG}`, c: " --month 2026-05 --dark" },
   ],
   npm: [
-    { p: "$", t: " npm i -g claude-wrapped", c: "" },
-    { p: "$", t: " claude-wrapped", c: " --month 2026-05" },
+    { p: "$", t: ` npm i -g ${PKG}`, c: "" },
+    { p: "$", t: ` ${PKG}`, c: " --month 2026-05" },
   ],
   bun: [
-    { p: "$", t: " bun add -g claude-wrapped", c: "" },
-    { p: "$", t: " claude-wrapped", c: " --offline" },
+    { p: "$", t: ` bun add -g ${PKG}`, c: "" },
+    { p: "$", t: ` ${PKG}`, c: " --offline" },
   ],
 } as const;
 
