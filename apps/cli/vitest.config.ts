@@ -8,10 +8,12 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       include: ["src/**"],
-      // These modules can't (or needn't) be exercised under Vitest:
+      // These modules can't (or needn't) be measured under Vitest:
       //  - fonts.ts imports `.ttf` via tsup's binary loader (no Vite equivalent)
       //  - font-manifest.ts / assets / types.ts are plain data / type-only
-      //  - cli.ts is the executable entrypoint (cac wiring + process.exit)
+      //  - cli.ts is the executable entrypoint; it IS exercised end-to-end by the
+      //    test/e2e subprocess suite, but stays excluded here because v8 coverage
+      //    can't instrument a spawned child process.
       exclude: [
         "src/**/*.d.ts",
         "src/render/fonts.ts",
