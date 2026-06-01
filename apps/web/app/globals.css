@@ -371,21 +371,6 @@ a {
   0%, 100% { transform: rotate(2.6deg) translateY(0); }
   50% { transform: rotate(2.6deg) translateY(-10px); }
 }
-.card-cap {
-  position: absolute;
-  bottom: -0.7rem;
-  left: 6%;
-  z-index: 2;
-  font-family: var(--font-mono), monospace;
-  font-size: 0.66rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-  background: var(--cream);
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: 0.34rem 0.7rem;
-}
 [data-theme="light"] .only-dark { display: none; }
 [data-theme="dark"] .only-light { display: none; }
 

@@ -14,6 +14,7 @@ import {
   type Palette,
 } from "./theme.js";
 import { claudeLogoImg } from "./logo.js";
+import { name as pkgName } from "../../package.json";
 
 // ---- tiny markup helpers (Satori reads inline styles) -----------------------
 const esc = (t: string) =>
@@ -276,9 +277,22 @@ export function buildCardMarkup(s: WrappedStats, theme: Palette = LIGHT): string
       ),
   );
 
+  // ---- attribution (get-yours CTA) ----
+  const attribution = row(
+    "align-items:center;width:100%;padding:0 6px;gap:5px;",
+    txt(
+      `font-family:'${F.mono}';font-weight:400;font-size:15px;letter-spacing:0.3px;color:${C.inkSoft};`,
+      "get yours by running",
+    ) +
+      txt(
+        `font-family:'${F.mono}';font-weight:700;font-size:15px;letter-spacing:0.3px;color:${C.coral};`,
+        `npx ${pkgName}`,
+      ),
+  );
+
   // ---- root ----
   return div(
     `display:flex;flex-direction:column;justify-content:space-between;width:${WIDTH}px;height:${HEIGHT}px;background:${C.cream};padding:60px;font-family:'${F.display}';`,
-    header + hero + middle + heatmap + footer,
+    header + hero + middle + heatmap + footer + attribution,
   );
 }

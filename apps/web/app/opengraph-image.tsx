@@ -63,18 +63,23 @@ export default async function OpengraphImage() {
               beautifully wrapped.
             </div>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-            <div
-              style={{
-                display: "flex",
-                background: "#241A12",
-                color: "#FFFDF9",
-                borderRadius: 12,
-                padding: "14px 22px",
-                fontSize: 28,
-              }}
-            >
-              <span style={{ color: "#D97757", marginRight: 12 }}>$</span> {INSTALL_CMD}
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            <div style={{ display: "flex", fontSize: 22, letterSpacing: 2, color: "#8A7A6E", textTransform: "uppercase" }}>
+              Get yours by running
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+              <div
+                style={{
+                  display: "flex",
+                  background: "#241A12",
+                  color: "#FFFDF9",
+                  borderRadius: 12,
+                  padding: "14px 22px",
+                  fontSize: 28,
+                }}
+              >
+                <span style={{ color: "#D97757", marginRight: 12 }}>$</span> {INSTALL_CMD}
+              </div>
             </div>
           </div>
         </div>

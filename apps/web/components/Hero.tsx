@@ -54,7 +54,6 @@ export function Hero() {
             alt="The same Claude Wrapped card rendered in the warm near-black dark theme"
             priority
           />
-          <span className="card-cap">Fig. 01 — May 2026</span>
         </div>
       </div>
     </section>
