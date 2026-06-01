@@ -13,13 +13,14 @@ bun --filter web build    # static production build
 ```
 
 **Deploy (Vercel):** import the repo, set **Root Directory = `apps/web`**, deploy. No env vars
-required. Update the placeholder URL via `NEXT_PUBLIC_SITE_URL` (see `app/layout.tsx`).
+required. Live at <https://claude-wrapped-zeta.vercel.app>; to self-host elsewhere, set
+`NEXT_PUBLIC_SITE_URL` (see `app/layout.tsx`).
 
 ## Layout
 
 - `app/` — `layout.tsx` (fonts + metadata + no-flash theme), `page.tsx`, `globals.css`
   (design tokens + component styles), `opengraph-image.tsx`, `icon.svg`.
 - `components/` — section components (`Nav`, `Hero`, `InsideCard`, `Built`, `HowItWorks`,
-  `Install`, `Personas`, `Accuracy`, `Faq`, `Footer`) + primitives (`ThemeToggle`,
+  `Install`, `Personas`, `Faq`, `Footer`) + primitives (`ThemeToggle`,
   `CopyCommand`, `Reveal`, `icons`).
 - `lib/content.ts` — all page copy + the deterministic heatmap.

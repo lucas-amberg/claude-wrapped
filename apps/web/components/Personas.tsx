@@ -12,7 +12,7 @@ export function Personas() {
         <Reveal>
           <div className="personas">
             {PERSONAS.map((p) => (
-              <div className="persona" key={p.name} data-active={"active" in p && p.active ? "true" : "false"}>
+              <div className="persona" key={p.name}>
                 <span className="emoji">{p.emoji}</span>
                 <h3>{p.name}</h3>
                 <span className="when">{p.when}</span>

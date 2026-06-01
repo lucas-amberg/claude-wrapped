@@ -31,7 +31,7 @@ export function Hero() {
             <span className="sep">·</span>
             <b>Nothing uploaded</b>
             <span className="sep">·</span>
-            <b>ccusage-accurate</b>
+            <b>Open source</b>
             <span className="sep">·</span>
             <b>Node 18+</b>
           </p>

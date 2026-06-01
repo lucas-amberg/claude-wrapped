@@ -6,9 +6,8 @@ model split, an activity heatmap, and your "coding persona" — then saves it to
 and opens it.
 
 It's self-contained: it reads your local `~/.claude/projects/**/*.jsonl` logs directly and
-computes cost from per-model pricing — the same [LiteLLM](https://github.com/BerriAI/litellm)
-source [`ccusage`](https://github.com/ryoppippi/ccusage) uses — so the numbers line up with
-`ccusage` (see [Accuracy](#accuracy)).
+computes cost from per-model [LiteLLM](https://github.com/BerriAI/litellm) pricing — the rates
+Anthropic actually bills — so spend is computed from real data, not estimated.
 
 <p align="center">
   <img src="docs/sample.png" width="49%" alt="Claude Wrapped sample — light theme" />
@@ -16,7 +15,7 @@ source [`ccusage`](https://github.com/ryoppippi/ccusage) uses — so the numbers
 </p>
 <p align="center"><sub>Sample cards (illustrative data) — default and <code>--dark</code> themes.</sub></p>
 
-> 🌐 **There's a website:** see [the landing page](https://github.com/lucas-amberg/claude-wrapped)
+> 🌐 **There's a website:** see [the landing page](https://claude-wrapped-zeta.vercel.app)
 > for a tour of every panel, the install guide, and the design story. This package lives in the
 > [`claude-wrapped` monorepo](https://github.com/lucas-amberg/claude-wrapped) under `apps/cli`.
 
@@ -64,7 +63,7 @@ If your Claude config lives somewhere non-standard, set `CLAUDE_CONFIG_DIR`.
 
 1. **Load** — streams every `*.jsonl` under `~/.claude/projects` line-by-line (never loads a
    file whole), keeps `assistant` messages in the target month, and **dedups** resumed-session
-   copies by `requestId:message.id` (the same key `ccusage` uses).
+   copies by `requestId:message.id`.
 2. **Price** — fetches the LiteLLM price table (cached 24h under `~/.claude-wrapped/`, with a
    bundled fallback so first run / offline still works) and computes cost per record.
 3. **Aggregate** — totals, cache hit rate, top projects (worktrees rolled up to their parent
@@ -73,20 +72,6 @@ If your Claude config lives somewhere non-standard, set `CLAUDE_CONFIG_DIR`.
 4. **Render** — builds the card with [Satori](https://github.com/vercel/satori) (HTML/flexbox →
    SVG) and rasterizes it to PNG with [resvg](https://github.com/yisibl/resvg-js). Fonts
    (Poppins + Space Mono) are embedded in the binary.
-
-## Accuracy
-
-Totals are designed to match `ccusage monthly` for the same month (Claude agents only):
-
-- **Total tokens** and **cache figures** match to ~0.05%.
-- **Cost** matches within ~1%; per-model cost matches `ccusage` to 6 decimals for identical
-  token inputs. Cost uses the flat `cache_creation_input_token_cost` for all cache-creation
-  tokens, exactly like `ccusage` (the 1h cache tier is intentionally not applied).
-- One known difference: `ccusage` counts a small amount (~1%) more **output tokens** than a
-  canonical `requestId:message.id` dedup yields; this is immaterial to the headline figures
-  (output is a tiny slice of total tokens) and doesn't affect tokens/cost beyond the ~1% band.
-- `ccusage` buckets *monthly* totals by UTC; Claude Wrapped defaults to your **local** timezone
-  (so "your May" is genuinely your local May). Pass `--timezone UTC` to match `ccusage` exactly.
 
 ## Development
 

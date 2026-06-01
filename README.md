@@ -1,24 +1,42 @@
+<div align="center">
+
 # Claude Wrapped
 
 A **Spotify-Wrapped-style** image of your Claude Code usage — total tokens, spend, cache hit
 rate, top projects, model split, an activity heatmap, and your "coding persona" — rendered from
 your local logs, nothing uploaded.
 
+<!-- status: live npm + repo/social -->
+[![npm version](https://img.shields.io/npm/v/claude-wrapped?style=for-the-badge&logo=npm&logoColor=white&label=npm&color=CB3837)](https://www.npmjs.com/package/claude-wrapped)
+[![npm downloads](https://img.shields.io/npm/dm/claude-wrapped?style=for-the-badge&logo=npm&logoColor=white&label=downloads&color=CB3837)](https://www.npmjs.com/package/claude-wrapped)
+[![GitHub stars](https://img.shields.io/github/stars/lucas-amberg/claude-wrapped?style=for-the-badge&logo=github&logoColor=white&color=2B3137)](https://github.com/lucas-amberg/claude-wrapped/stargazers)
+[![License: MIT](https://img.shields.io/badge/License-MIT-3DA639?style=for-the-badge)](apps/cli/README.md#license)
+[![PRs welcome](https://img.shields.io/badge/PRs-welcome-6F42C1?style=for-the-badge)](https://github.com/lucas-amberg/claude-wrapped/pulls)
+
+<!-- tech stack -->
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![Bun](https://img.shields.io/badge/Bun-FBF0DF?style=for-the-badge&logo=bun&logoColor=000000)
+![Turborepo](https://img.shields.io/badge/Turborepo-EF4444?style=for-the-badge&logo=turborepo&logoColor=white)
+![Next.js 16](https://img.shields.io/badge/Next.js%2016-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
+![React 19](https://img.shields.io/badge/React%2019-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Tailwind v4](https://img.shields.io/badge/Tailwind%20v4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
+![Satori](https://img.shields.io/badge/Satori-0B0B0F?style=for-the-badge&logo=vercel&logoColor=white)
+
+<a href="https://claude-wrapped.vercel.app"><b>🌐 View the site →</b></a>
+
+<p align="center">
+  <a href="https://claude-wrapped-zeta.vercel.app"><b>🌐 View the site →</b></a>
+</p>
+ 
+<img src="apps/cli/docs/sample.png" width="49%" alt="Claude Wrapped sample — light theme" />
+<img src="apps/cli/docs/sample-dark.png" width="49%" alt="Claude Wrapped sample — dark theme" />
+
+<sub>Sample cards (illustrative data) — default and <code>--dark</code> themes.</sub>
+
+</div>
+
 This repository is a **Turborepo + Bun monorepo** with two apps: the published CLI and a
 marketing/documentation website that shows it off.
-
-<p align="center">
-  <a href="https://claude-wrapped.vercel.app"><b>🌐 View the site →</b></a>
-</p>
-
-<p align="center">
-  <img src="apps/cli/docs/sample.png" width="49%" alt="Claude Wrapped sample — light theme" />
-  <img src="apps/cli/docs/sample-dark.png" width="49%" alt="Claude Wrapped sample — dark theme" />
-</p>
-<p align="center"><sub>Sample cards (illustrative data) — default and <code>--dark</code> themes.</sub></p>
-
-> The site is **deploy-ready but not yet deployed** — the link above is a placeholder. See
-> [Deploying the site](#deploying-the-site).
 
 ## Try the CLI
 
@@ -27,7 +45,7 @@ npx claude-wrapped            # current month → ~/Desktop, then opens it
 npx claude-wrapped --dark     # warm near-black dark theme
 ```
 
-Full CLI documentation — every flag, how it works, and the `ccusage` accuracy notes — lives in
+Full CLI documentation — every flag and how it works — lives in
 **[`apps/cli/README.md`](apps/cli/README.md)** (this is what npm renders).
 
 ## Monorepo layout
@@ -70,8 +88,14 @@ The site is a static Next.js app, ready for [Vercel](https://vercel.com):
 2. Set **Root Directory** to `apps/web` (Vercel auto-detects Next.js + Bun from there).
 3. Deploy. No environment variables are required — the site is fully static.
 
-Then update the placeholder URLs above and in
-[`apps/web/app/layout.tsx`](apps/web/app/layout.tsx) (or set `NEXT_PUBLIC_SITE_URL`).
+The live deployment is **<https://claude-wrapped-zeta.vercel.app>**. To self-host under a
+different URL, set `NEXT_PUBLIC_SITE_URL` (it feeds the metadata/OG defaults in
+[`apps/web/app/layout.tsx`](apps/web/app/layout.tsx)).
+
+## Acknowledgements
+
+Inspired by [`ccusage`](https://github.com/ryoppippi/ccusage) — the project that got me poking
+at Claude Code usage in the first place. Both read the same LiteLLM pricing source.
 
 ## License
 

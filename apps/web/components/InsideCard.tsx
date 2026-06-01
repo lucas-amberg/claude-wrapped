@@ -1,6 +1,6 @@
 import { Reveal } from "./Reveal";
 import { SectionHead } from "./SectionHead";
-import { HERO_STATS, PANELS, MODELS, HEAT_CELLS } from "@/lib/content";
+import { HERO_STATS, PANELS, MODELS, HEAT_CELLS, PEAK_LABEL } from "@/lib/content";
 
 const TICKS = ["12a", "6a", "12p", "6p", "11p"];
 
@@ -62,7 +62,7 @@ export function InsideCard() {
             <div className="motif">
               <div className="cap">
                 <span>When you code</span>
-                <span style={{ color: "var(--coral-deep)" }}>Peak · 4 PM</span>
+                <span style={{ color: "var(--coral-deep)" }}>{PEAK_LABEL}</span>
               </div>
               <div className="heat" aria-hidden>
                 {HEAT_CELLS.map((v, i) => (

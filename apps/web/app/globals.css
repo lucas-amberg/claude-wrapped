@@ -768,43 +768,6 @@ a {
   font-size: 0.84rem;
   color: var(--ink-soft);
 }
-.persona[data-active="true"] {
-  background: color-mix(in srgb, var(--coral) 9%, transparent);
-}
-
-/* accuracy */
-.accuracy-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(2rem, 5vw, 4rem);
-  align-items: center;
-}
-.acc-figs {
-  display: grid;
-  gap: 1.1rem;
-}
-.acc-fig {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: baseline;
-  gap: 1.1rem;
-  padding-bottom: 1.1rem;
-  border-bottom: 1px solid var(--hair);
-}
-.acc-fig:last-child {
-  border-bottom: none;
-}
-.acc-fig .v {
-  font-size: clamp(1.6rem, 3vw, 2.1rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--coral-deep);
-  min-width: 4.5ch;
-}
-.acc-fig .l {
-  color: var(--ink-soft);
-  font-size: 0.95rem;
-}
 
 /* faq */
 .faq {
@@ -958,7 +921,6 @@ a {
   .hero-grid { grid-template-columns: 1fr; }
   .card-stage { order: -1; margin-bottom: 1rem; }
   .inside-grid { grid-template-columns: 1fr; }
-  .accuracy-grid { grid-template-columns: 1fr; }
   .install-grid { grid-template-columns: 1fr; }
   .steps { grid-template-columns: 1fr 1fr; }
   .trio { grid-template-columns: 1fr; gap: 1.4rem; }
