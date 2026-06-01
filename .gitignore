@@ -18,6 +18,9 @@ mockup/
 # stray screenshots / playwright cache
 .playwright-mcp/
 
+# internal task notes / scratch (not part of the public repo)
+tasks/
+
 # os
 .DS_Store
 

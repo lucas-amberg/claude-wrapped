@@ -7,8 +7,8 @@ rate, top projects, model split, an activity heatmap, and your "coding persona" 
 your local logs, nothing uploaded.
 
 <!-- status: live npm + repo/social -->
-[![npm version](https://img.shields.io/npm/v/claude-wrapped?style=for-the-badge&logo=npm&logoColor=white&label=npm&color=CB3837)](https://www.npmjs.com/package/claude-wrapped)
-[![npm downloads](https://img.shields.io/npm/dm/claude-wrapped?style=for-the-badge&logo=npm&logoColor=white&label=downloads&color=CB3837)](https://www.npmjs.com/package/claude-wrapped)
+[![npm version](https://img.shields.io/npm/v/claude-wrapped-cli?style=for-the-badge&logo=npm&logoColor=white&label=npm&color=CB3837)](https://www.npmjs.com/package/claude-wrapped-cli)
+[![npm downloads](https://img.shields.io/npm/dm/claude-wrapped-cli?style=for-the-badge&logo=npm&logoColor=white&label=downloads&color=CB3837)](https://www.npmjs.com/package/claude-wrapped-cli)
 [![GitHub stars](https://img.shields.io/github/stars/lucas-amberg/claude-wrapped?style=for-the-badge&logo=github&logoColor=white&color=2B3137)](https://github.com/lucas-amberg/claude-wrapped/stargazers)
 [![License: MIT](https://img.shields.io/badge/License-MIT-3DA639?style=for-the-badge)](apps/cli/README.md#license)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-6F42C1?style=for-the-badge)](https://github.com/lucas-amberg/claude-wrapped/pulls)
@@ -39,8 +39,8 @@ marketing/documentation website that shows it off.
 ## Try the CLI
 
 ```bash
-npx claude-wrapped            # current month → ~/Desktop, then opens it
-npx claude-wrapped --dark     # warm near-black dark theme
+npx claude-wrapped-cli            # current month → ~/Desktop, then opens it
+npx claude-wrapped-cli --dark     # warm near-black dark theme
 ```
 
 Full CLI documentation — every flag and how it works — lives in
@@ -51,7 +51,7 @@ Full CLI documentation — every flag and how it works — lives in
 ```
 claude-wrapped/
 ├── apps/
-│   ├── cli/      # the published `claude-wrapped` npm CLI (Bun · tsup · Satori → resvg)
+│   ├── cli/      # the published `claude-wrapped-cli` npm CLI (Bun · tsup · Satori → resvg)
 │   └── web/      # the marketing/docs site (Next.js 16 · Tailwind v4 · static)
 ├── turbo.json    # build / dev / typecheck / lint pipeline
 └── package.json  # workspaces + turbo pass-through scripts
@@ -74,7 +74,7 @@ bun run lint       # turbo: lints the web app
 Work on one app at a time:
 
 ```bash
-bun --filter claude-wrapped dev   # CLI only (tsup --watch)
+bun --filter claude-wrapped-cli dev   # CLI only (tsup --watch)
 bun --filter web dev              # website only (next dev)
 ```
 

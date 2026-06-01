@@ -34,7 +34,7 @@ describe("landing-page content invariants", () => {
   });
 
   it("exposes the canonical install command", () => {
-    expect(INSTALL_CMD).toBe("npx claude-wrapped");
+    expect(INSTALL_CMD).toBe("npx claude-wrapped-cli");
   });
 
   it("REPO_URL and NPM_URL are valid https URLs", () => {
