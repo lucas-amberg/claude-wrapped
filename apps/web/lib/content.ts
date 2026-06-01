@@ -16,7 +16,7 @@ export const HERO_STATS = [
 
 export const PANELS: { term: string; desc: string }[] = [
   { term: "Total tokens", desc: "Everything you ran through Claude Code this month, headlined." },
-  { term: "Spend", desc: "Real cost from per-model pricing — the same source ccusage uses." },
+  { term: "Spend", desc: "Real cost from per-model LiteLLM pricing — computed, not estimated." },
   { term: "Top projects", desc: "Your biggest repos by spend, with worktrees rolled into the parent." },
   { term: "Model split", desc: "How spend divides across Opus, Sonnet, and Haiku." },
   { term: "When you code", desc: "A 7×24 heatmap of your week, peak hour called out." },
@@ -36,9 +36,9 @@ export const BUILT = [
     p: "It reads your local logs and renders the PNG offline. The only network call is a price table — and --offline skips that too.",
   },
   {
-    k: "ccusage-accurate",
-    h: "The numbers line up",
-    p: "Tokens and cache match ccusage to ~0.05%, cost to ~1%, with per-model cost exact to six decimals.",
+    k: "Real pricing",
+    h: "Costs, not guesses",
+    p: "Spend is computed from per-model LiteLLM rates — the prices Anthropic actually bills.",
   },
   {
     k: "Zero setup",
@@ -89,24 +89,18 @@ export const PERSONAS = [
   { emoji: "🌙", name: "Evening Hacker", when: "After dinner", p: "Comes alive for golden-hour debugging." },
 ] as const;
 
-export const ACCURACY = [
-  { v: "~0.05%", l: "gap on total tokens and cache figures versus ccusage monthly." },
-  { v: "~1%", l: "gap on cost — per-model cost matches to six decimals for identical inputs." },
-  { v: "local tz", l: "monthly buckets use your timezone, so “your May” is genuinely yours. Pass --timezone UTC to match ccusage exactly." },
-] as const;
-
 export const FAQ = [
   {
     q: "Does it upload my data anywhere?",
     a: "No. It reads your local ~/.claude/projects logs and renders a PNG on your machine. The only network request is the LiteLLM price table — and --offline skips even that.",
   },
   {
-    q: "How accurate are the numbers?",
-    a: "Total tokens and cache figures match ccusage monthly to about 0.05%; cost to about 1%, with per-model cost exact to six decimals for identical token inputs.",
+    q: "How are the numbers computed?",
+    a: "Tokens are read straight from your local logs, and cost comes from per-model LiteLLM pricing — the rates Anthropic actually bills. Nothing is estimated.",
   },
   {
     q: "What about timezones?",
-    a: "It groups by your system-local timezone so “your May” is genuinely your local May. Pass --timezone UTC to match ccusage's UTC buckets exactly.",
+    a: "It groups by your system-local timezone so “your May” is genuinely your local May. Prefer UTC? Pass --timezone UTC.",
   },
   {
     q: "What do I need installed?",

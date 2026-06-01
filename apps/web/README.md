@@ -20,6 +20,6 @@ required. Update the placeholder URL via `NEXT_PUBLIC_SITE_URL` (see `app/layout
 - `app/` — `layout.tsx` (fonts + metadata + no-flash theme), `page.tsx`, `globals.css`
   (design tokens + component styles), `opengraph-image.tsx`, `icon.svg`.
 - `components/` — section components (`Nav`, `Hero`, `InsideCard`, `Built`, `HowItWorks`,
-  `Install`, `Personas`, `Accuracy`, `Faq`, `Footer`) + primitives (`ThemeToggle`,
+  `Install`, `Personas`, `Faq`, `Footer`) + primitives (`ThemeToggle`,
   `CopyCommand`, `Reveal`, `icons`).
 - `lib/content.ts` — all page copy + the deterministic heatmap.
