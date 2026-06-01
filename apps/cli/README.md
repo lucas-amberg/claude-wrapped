@@ -15,7 +15,7 @@ Anthropic actually bills — so spend is computed from real data, not estimated.
 </p>
 <p align="center"><sub>Sample cards (illustrative data) — default and <code>--dark</code> themes.</sub></p>
 
-> 🌐 **There's a website:** see [the landing page](https://github.com/lucas-amberg/claude-wrapped)
+> 🌐 **There's a website:** see [the landing page](https://claude-wrapped-zeta.vercel.app)
 > for a tour of every panel, the install guide, and the design story. This package lives in the
 > [`claude-wrapped` monorepo](https://github.com/lucas-amberg/claude-wrapped) under `apps/cli`.
 

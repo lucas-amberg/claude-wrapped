@@ -13,7 +13,8 @@ bun --filter web build    # static production build
 ```
 
 **Deploy (Vercel):** import the repo, set **Root Directory = `apps/web`**, deploy. No env vars
-required. Update the placeholder URL via `NEXT_PUBLIC_SITE_URL` (see `app/layout.tsx`).
+required. Live at <https://claude-wrapped-zeta.vercel.app>; to self-host elsewhere, set
+`NEXT_PUBLIC_SITE_URL` (see `app/layout.tsx`).
 
 ## Layout
 
