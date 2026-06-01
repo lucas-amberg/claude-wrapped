@@ -16,14 +16,14 @@ const spaceMono = Space_Mono({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://claude-wrapped.vercel.app";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://claude-wrapped-zeta.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: "Claude Wrapped — Your month in Claude Code, beautifully wrapped",
   description:
     "A Spotify-Wrapped-style card of your Claude Code usage — total tokens, spend, cache hit rate, top projects, model split, an activity heatmap and your coding persona. Generated from your local logs, nothing uploaded.",
-  keywords: ["claude", "claude code", "wrapped", "ccusage", "tokens", "usage", "cli"],
+  keywords: ["claude", "claude code", "wrapped", "tokens", "usage", "cli"],
   authors: [{ name: "Lucas Amberg" }],
   openGraph: {
     title: "Claude Wrapped",
