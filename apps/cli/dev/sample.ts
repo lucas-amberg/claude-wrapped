@@ -1,6 +1,8 @@
 // Dev-only: regenerate the committed README sample cards from the fictional
 // fixture. One run writes BOTH PNGs (light → docs/sample.png, dark →
-// docs/sample-dark.png) plus a side-by-side HTML preview for a browser check.
+// docs/sample-dark.png) AND mirrors each into apps/web/public/ so the website's
+// hero card can never drift from the README's — plus a side-by-side HTML
+// preview for a browser check.
 //   bun dev/sample.ts
 //
 // Reuses the exact renderSvg / svgToPng / themeFor the production CLI uses, so
@@ -18,6 +20,7 @@ import { SAMPLE_STATS } from "./sample-data.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, "..");
+const web = join(root, "..", "web", "public");
 mkdirSync(join(root, "docs"), { recursive: true });
 mkdirSync(join(root, "mockup"), { recursive: true });
 
@@ -32,18 +35,28 @@ const fonts: FontSpec[] = fontData.map(({ family, data, weight }) => ({
   style: "normal",
 }));
 
-async function renderTo(theme: Palette, pngPath: string): Promise<number> {
+// Render once per theme, then write the SAME buffer to every target path so the
+// docs copy and the website's public copy stay byte-identical.
+async function renderTo(theme: Palette, ...outPaths: string[]): Promise<number> {
   const svg = await renderSvg(SAMPLE_STATS, fonts, theme);
   const png = svgToPng(svg, 2, theme.pngBg);
-  writeFileSync(join(root, pngPath), png);
+  for (const p of outPaths) writeFileSync(p, png);
   return png.length;
 }
 
 const t0 = Date.now();
-const lightBytes = await renderTo(themeFor("light"), "docs/sample.png");
-const darkBytes = await renderTo(themeFor("dark"), "docs/sample-dark.png");
+const lightBytes = await renderTo(
+  themeFor("light"),
+  join(root, "docs/sample.png"),
+  join(web, "sample.png"),
+);
+const darkBytes = await renderTo(
+  themeFor("dark"),
+  join(root, "docs/sample-dark.png"),
+  join(web, "sample-dark.png"),
+);
 console.log(
-  `wrote docs/sample.png (${lightBytes} bytes) + docs/sample-dark.png (${darkBytes} bytes) in ${Date.now() - t0}ms`,
+  `wrote docs/sample.png + docs/sample-dark.png (${lightBytes} + ${darkBytes} bytes), mirrored to apps/web/public/, in ${Date.now() - t0}ms`,
 );
 
 // --- side-by-side HTML preview (fonts base64-inlined, like dev/mockup.ts) ----

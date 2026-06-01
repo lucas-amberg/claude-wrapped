@@ -24,6 +24,10 @@ your local logs, nothing uploaded.
 
 <a href="https://claude-wrapped.vercel.app"><b>🌐 View the site →</b></a>
 
+<p align="center">
+  <a href="https://claude-wrapped-zeta.vercel.app"><b>🌐 View the site →</b></a>
+</p>
+ 
 <img src="apps/cli/docs/sample.png" width="49%" alt="Claude Wrapped sample — light theme" />
 <img src="apps/cli/docs/sample-dark.png" width="49%" alt="Claude Wrapped sample — dark theme" />
 
@@ -33,9 +37,6 @@ your local logs, nothing uploaded.
 
 This repository is a **Turborepo + Bun monorepo** with two apps: the published CLI and a
 marketing/documentation website that shows it off.
-
-> The site is **deploy-ready but not yet deployed** — the link above is a placeholder. See
-> [Deploying the site](#deploying-the-site).
 
 ## Try the CLI
 
@@ -87,8 +88,9 @@ The site is a static Next.js app, ready for [Vercel](https://vercel.com):
 2. Set **Root Directory** to `apps/web` (Vercel auto-detects Next.js + Bun from there).
 3. Deploy. No environment variables are required — the site is fully static.
 
-Then update the placeholder URLs above and in
-[`apps/web/app/layout.tsx`](apps/web/app/layout.tsx) (or set `NEXT_PUBLIC_SITE_URL`).
+The live deployment is **<https://claude-wrapped-zeta.vercel.app>**. To self-host under a
+different URL, set `NEXT_PUBLIC_SITE_URL` (it feeds the metadata/OG defaults in
+[`apps/web/app/layout.tsx`](apps/web/app/layout.tsx)).
 
 ## License
 
