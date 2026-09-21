@@ -1,7 +1,7 @@
 {
   "name": "claude-wrapped-cli",
   "version": "0.1.1",
-  "description": "Spotify-Wrapped-style summary image of your Claude Code usage.",
+  "description": "Spotify-Wrapped-style summary image of your Claude Code and Codex usage.",
   "author": "Lucas Amberg",
   "homepage": "https://claude-wrapped-zeta.vercel.app",
   "repository": {
@@ -20,6 +20,8 @@
     "dist",
     "docs/sample.png",
     "docs/sample-dark.png",
+    "docs/sample-codex.png",
+    "docs/sample-combined.png",
     "README.md",
     "LICENSE",
     "OFL.txt"
@@ -37,6 +39,9 @@
   "keywords": [
     "claude",
     "claude-code",
+    "codex",
+    "openai",
+    "gpt",
     "wrapped",
     "ccusage",
     "cli",

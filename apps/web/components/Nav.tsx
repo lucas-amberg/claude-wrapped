@@ -1,4 +1,4 @@
-import { Logo, GitHubIcon, NpmIcon } from "./icons";
+import { Logo, CodexLogo, GitHubIcon, NpmIcon } from "./icons";
 import { CommandChip } from "./CopyCommand";
 import { ThemeToggle } from "./ThemeToggle";
 import { REPO_URL, NPM_URL } from "@/lib/content";
@@ -7,9 +7,12 @@ export function Nav() {
   return (
     <header className="nav">
       <div className="wrap nav-inner">
-        <a className="brand" href="#top" aria-label="Claude Wrapped — home">
-          <Logo className="logo" />
-          <span>Claude Wrapped</span>
+        <a className="brand" href="#top" aria-label="Vibe Coding Wrapped — home">
+          <span className="brand-marks" aria-hidden>
+            <Logo className="logo" />
+            <CodexLogo className="logo logo-codex" />
+          </span>
+          <span>Vibe Coding Wrapped</span>
         </a>
         <nav className="nav-links" aria-label="Sections">
           <a className="navlink" href="#inside">Features</a>

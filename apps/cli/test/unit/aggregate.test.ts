@@ -184,19 +184,29 @@ describe("projectName", () => {
     expect(projectName("/Users/dev/myproj--claude-worktrees-foo")).toBe("myproj");
     expect(projectName("/Users/dev/myproj--worktrees-bar")).toBe("myproj");
   });
+  it("takes the project AFTER the Codex worktree hash (it lives under ~/.codex)", () => {
+    expect(projectName("/Users/me/.codex/worktrees/6572/peptrac-app")).toBe("peptrac-app");
+    expect(projectName("/Users/me/.codex/worktrees/abcd/peptrac-app/src")).toBe("peptrac-app");
+  });
   it("returns 'unknown' for an empty cwd", () => {
     expect(projectName("")).toBe("unknown");
   });
 });
 
 describe("modelFamily", () => {
-  it("maps Opus / Sonnet / Haiku case-insensitively", () => {
+  it("maps Opus / Sonnet / Haiku case-insensitively (Claude)", () => {
     expect(modelFamily("claude-opus-4-7")).toBe("Opus");
     expect(modelFamily("claude-OPUS-4")).toBe("Opus");
     expect(modelFamily("claude-sonnet-4-6")).toBe("Sonnet");
     expect(modelFamily("anthropic/claude-haiku-4-5")).toBe("Haiku");
   });
-  it("passes unknown models through unchanged", () => {
+  it("passes unknown Claude-side models through unchanged", () => {
     expect(modelFamily("gpt-4o")).toBe("gpt-4o");
+  });
+  it("prettifies Codex model names when provider is codex", () => {
+    expect(modelFamily("gpt-5.6-sol", "codex")).toBe("GPT-5.6 Sol");
+    expect(modelFamily("gpt-5.6-luna", "codex")).toBe("GPT-5.6 Luna");
+    expect(modelFamily("gpt-5-codex", "codex")).toBe("GPT-5 Codex");
+    expect(modelFamily("gpt-5.5", "codex")).toBe("GPT-5.5");
   });
 });

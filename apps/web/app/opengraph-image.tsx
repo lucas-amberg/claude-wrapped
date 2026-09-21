@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { HERO_STATS, INSTALL_CMD } from "@/lib/content";
 
-export const alt = "Claude Wrapped — your month in Claude Code, beautifully wrapped";
+export const alt = "Vibe Coding Wrapped — your month across Claude Code and Codex, beautifully wrapped";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -40,8 +40,9 @@ export default async function OpengraphImage() {
           }}
         />
         <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", flex: 1 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <div style={{ display: "flex", width: 26, height: 26, borderRadius: 8, background: "#D97757" }} />
+            <div style={{ display: "flex", width: 26, height: 26, borderRadius: 8, background: "#38BDF8" }} />
             <div
               style={{
                 display: "flex",
@@ -50,14 +51,15 @@ export default async function OpengraphImage() {
                 letterSpacing: 6,
                 color: "#C2562F",
                 textTransform: "uppercase",
+                marginLeft: 4,
               }}
             >
-              Claude Code · Monthly Wrapped
+              Claude Code + Codex · Monthly Wrapped
             </div>
           </div>
           <div style={{ display: "flex", flexDirection: "column" }}>
             <div style={{ display: "flex", fontSize: 76, fontWeight: 700, lineHeight: 1.05, letterSpacing: -2 }}>
-              Your month in Claude Code,
+              Your month of vibe coding,
             </div>
             <div style={{ display: "flex", fontSize: 76, fontWeight: 700, lineHeight: 1.05, letterSpacing: -2, color: "#C2562F" }}>
               beautifully wrapped.
@@ -91,7 +93,7 @@ export default async function OpengraphImage() {
             width: 320,
             height: "100%",
             borderRadius: 28,
-            background: "linear-gradient(135deg, #E58A63, #C2562F)",
+            background: "linear-gradient(135deg, #E58A63, #0EA5E9)",
             padding: 36,
             marginLeft: 32,
           }}

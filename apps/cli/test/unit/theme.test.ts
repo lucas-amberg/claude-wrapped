@@ -80,17 +80,38 @@ describe("fmtDayShort", () => {
 });
 
 describe("themeFor", () => {
-  it("maps theme names to palettes", () => {
-    expect(themeFor("dark")).toBe(DARK);
-    expect(themeFor("light")).toBe(LIGHT);
+  it("builds provider + mode palettes; LIGHT/DARK are the Claude ones", () => {
+    expect(themeFor("claude", "light")).toEqual(LIGHT);
+    expect(themeFor("claude", "dark")).toEqual(DARK);
+    expect(LIGHT.provider).toBe("claude");
+    expect(themeFor("codex", "light").provider).toBe("codex");
+  });
+
+  it("gives each agent a distinct accent but a shared black hero", () => {
+    const cl = themeFor("claude", "light");
+    const cx = themeFor("codex", "light");
+    expect(cl.accent).not.toBe(cx.accent); // coral vs cyan
+    expect(cl.heroFrom).toBe(cx.heroFrom); // black is the shared main color
+    expect(cl.bg).toBe(cx.bg); // shared neutral surfaces
   });
 });
 
 describe("palettes", () => {
-  it("LIGHT and DARK expose the same keys, all string-valued", () => {
-    expect(Object.keys(DARK).sort()).toEqual(Object.keys(LIGHT).sort());
-    for (const v of [...Object.values(LIGHT), ...Object.values(DARK)]) {
-      expect(typeof v).toBe("string");
+  it("every provider+mode palette exposes the same keys", () => {
+    const keys = Object.keys(LIGHT).sort();
+    for (const p of ["claude", "codex"] as const)
+      for (const m of ["light", "dark"] as const)
+        expect(Object.keys(themeFor(p, m)).sort()).toEqual(keys);
+  });
+
+  it("scalar tokens are strings; fam is a non-empty color ramp", () => {
+    for (const [k, v] of Object.entries(LIGHT)) {
+      if (k === "fam") {
+        expect(Array.isArray(v)).toBe(true);
+        expect((v as string[]).length).toBeGreaterThan(0);
+      } else {
+        expect(typeof v).toBe("string");
+      }
     }
   });
 });

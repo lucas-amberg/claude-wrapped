@@ -16,7 +16,7 @@ mkdirSync(join(root, "mockup"), { recursive: true });
 const dark = process.argv.includes("--dark");
 const statsPath = process.argv.slice(2).find((a) => !a.startsWith("--")) || "/tmp/stats-local.json";
 const stats = JSON.parse(readFileSync(statsPath, "utf8")) as WrappedStats;
-const theme = themeFor(dark ? "dark" : "light");
+const theme = themeFor(stats.provider ?? "claude", dark ? "dark" : "light");
 
 const fdir = join(root, "src/assets/fonts");
 const fonts: FontSpec[] = FONT_FILES.map(({ family, file, weight }) => ({

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Logo } from "./icons";
+import { Logo, CodexLogo } from "./icons";
 import { CopyButton } from "./CopyCommand";
 import { REPO_URL } from "@/lib/content";
 
@@ -11,14 +11,16 @@ export function Hero() {
         <div>
           <span className="eyebrow">
             <Logo className="spark" />
-            Monthly · Claude Code usage
+            <CodexLogo className="spark spark-codex" />
+            Monthly · Claude Code + Codex
           </span>
           <h1 className="display">
-            Your month in Claude Code, <span className="em">beautifully wrapped.</span>
+            Your month of vibe coding, <span className="em">beautifully wrapped.</span>
           </h1>
           <p className="lede">
-            A Spotify-Wrapped-style card of how you actually code — tokens, spend, top
-            projects, model split, and your coding persona. Generated from your local logs.
+            A Spotify-Wrapped-style card of how you actually code — across Claude Code and
+            Codex. Tokens, spend, top projects, model split, and your coding persona, straight
+            from your local logs.
           </p>
           <div className="cta">
             <CopyButton />
@@ -40,18 +42,18 @@ export function Hero() {
         <div className="card-stage">
           <Image
             className="card-img only-light"
-            src="/sample.png"
+            src="/sample-combined.png"
             width={1080}
-            height={1350}
-            alt="A sample Claude Wrapped card showing total tokens, spend, top projects, model split, an activity heatmap and a coding persona"
+            height={1351}
+            alt="A sample Vibe Coding Wrapped card combining Claude Code and Codex — total tokens, spend, top projects, model splits, activity heatmaps and coding personas"
             priority
           />
           <Image
             className="card-img only-dark"
-            src="/sample-dark.png"
+            src="/sample-combined-dark.png"
             width={1080}
-            height={1350}
-            alt="The same Claude Wrapped card rendered in the warm near-black dark theme"
+            height={1351}
+            alt="The same combined Vibe Coding Wrapped card rendered in the near-black dark theme"
             priority
           />
         </div>

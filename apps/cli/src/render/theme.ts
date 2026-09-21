@@ -1,76 +1,144 @@
 // Design tokens + value formatters shared by the mockup and the Satori renderer.
+import type { Provider } from "../types.js";
+export type { Provider };
 
 export const WIDTH = 1080;
-export const HEIGHT = 1350; // 4:5 portrait
-
-export const COLOR = {
-  cream: "#FAF9F5",
-  paper: "#F3EEE3", // slightly warmer panel tint
-  ink: "#2A1E16",
-  inkSoft: "rgba(42,30,22,0.55)",
-  inkFaint: "rgba(42,30,22,0.08)",
-  coral: "#D97757",
-  coralDeep: "#C2562F",
-  coralSoft: "rgba(217,119,87,0.10)",
-  peach: "#F0B49A",
-  cocoa: "#8A4B2F",
-  creamOn: "#FFFDF9",
-  creamDim: "rgba(255,251,245,0.72)",
-  creamFaint: "rgba(255,251,245,0.26)",
-  footerInk: "#241A12",
-} as const;
-
-export type Palette = { [K in keyof typeof COLOR]: string } & {
-  heroFrom: string; // hero gradient start (lighter coral)
-  heatOnRgb: string; // "R,G,B" triple used inside rgba(...)
-  heatOff: string; // full color for empty heatmap cells
-  famOpus: string;
-  famSonnet: string;
-  famHaiku: string;
-  famFallback: string;
-  pngBg: string; // resvg background + mockup page bg
-};
-
-export const LIGHT: Palette = {
-  ...COLOR,
-  heroFrom: "#E58A63",
-  heatOnRgb: "217,119,87",
-  heatOff: "rgba(42,30,22,0.05)",
-  famOpus: COLOR.coral,
-  famSonnet: COLOR.peach,
-  famHaiku: COLOR.cocoa,
-  famFallback: COLOR.coralDeep,
-  pngBg: COLOR.cream, // #FAF9F5 — unchanged
-};
-
-// Warm near-black: brand-family dark (warm brown-tinted blacks, warm-cream text, coral kept)
-export const DARK: Palette = {
-  cream: "#181210", // root bg — warm near-black
-  paper: "#241B16", // raised panel (models) — lifts off root
-  ink: "#F4EBE1", // primary text — warm cream
-  inkSoft: "rgba(244,235,225,0.58)", // secondary text/labels
-  inkFaint: "rgba(244,235,225,0.12)", // borders + project-track bg
-  coral: "#E08A66", // lifted coral so accents pop on dark
-  coralDeep: "#C2562F", // kept — rich hero gradient end
-  coralSoft: "rgba(224,138,102,0.12)", // projects panel wash
-  peach: "#F2BFA4", // Sonnet dot + footer streak accent
-  cocoa: "#C98A63", // lifted (legacy ref; Haiku now uses famHaiku)
-  creamOn: "#FFFDF9", // light text on coral hero / footer (kept)
-  creamDim: "rgba(255,251,245,0.72)", // kept
-  creamFaint: "rgba(255,251,245,0.26)", // kept
-  footerInk: "#0F0B09", // darkest surface — anchors the footer band
-  heroFrom: "#E58A63", // hero stays a bright coral gradient
-  heatOnRgb: "224,138,102", // active heat = lifted coral rgb
-  heatOff: "rgba(244,235,225,0.06)", // empty cells: faint light-on-dark
-  famOpus: "#E08A66",
-  famSonnet: "#F2BFA4",
-  famHaiku: "#D69B72", // cocoa is illegible on dark → lighter tan, distinct from coral/peach
-  famFallback: "#C2562F",
-  pngBg: "#181210", // == DARK.cream
-};
+export const HEIGHT = 1350; // 4:5 portrait (single card)
+export const COMBINED_WIDTH = 1080; // combined card is width-only (Satori auto-heights)
 
 export type ThemeName = "light" | "dark";
-export const themeFor = (n: ThemeName): Palette => (n === "dark" ? DARK : LIGHT);
+
+export interface Palette {
+  provider: Provider;
+  // surfaces + text (neutral, shared across providers for a given mode)
+  bg: string; // card root background
+  paper: string; // raised panel (models)
+  ink: string; // primary text
+  inkSoft: string; // secondary text / labels
+  inkFaint: string; // borders + track backgrounds
+  heatOff: string; // empty heatmap cell
+  pngBg: string; // resvg background + mockup page bg (== bg)
+  // black is the MAIN color: hero + footer bands, and the text that sits on them
+  heroFrom: string; // hero gradient start (near-black)
+  heroTo: string; // hero gradient end (black)
+  footerInk: string; // footer band
+  creamOn: string; // text on black
+  creamDim: string; // secondary text on black
+  creamFaint: string; // hairlines on black
+  // brand accent (provider-specific)
+  accent: string; // bright accent — logo, dots, active heat
+  accentDeep: string; // deeper accent — accent-colored text + bar gradient end
+  accentSoft: string; // faint accent wash — projects panel
+  accentLight: string; // lightest accent — footer streak + avatar gradient start
+  accentOnRgb: string; // "R,G,B" triple for heatmap rgba() fills
+  // model-family color ramp, assigned by cost rank
+  fam: string[];
+  famFallback: string;
+}
+
+// --- neutral base per mode (black hero/footer are the same for both agents) --
+type Base = Omit<
+  Palette,
+  | "provider"
+  | "accent"
+  | "accentDeep"
+  | "accentSoft"
+  | "accentLight"
+  | "accentOnRgb"
+  | "fam"
+  | "famFallback"
+>;
+
+const BASE: Record<ThemeName, Base> = {
+  light: {
+    bg: "#FAF9F5",
+    paper: "#F3EEE3",
+    ink: "#2A1E16",
+    inkSoft: "rgba(42,30,22,0.55)",
+    inkFaint: "rgba(42,30,22,0.08)",
+    heatOff: "rgba(42,30,22,0.05)",
+    pngBg: "#FAF9F5",
+    heroFrom: "#26221F", // near-black, faint warmth
+    heroTo: "#050403",
+    footerInk: "#0C0A09",
+    creamOn: "#FFFDF9",
+    creamDim: "rgba(255,251,245,0.72)",
+    creamFaint: "rgba(255,251,245,0.20)",
+  },
+  dark: {
+    bg: "#1B1A19", // page lifts slightly so the black hero reads as a deep well
+    paper: "#262422",
+    ink: "#F4EBE1",
+    inkSoft: "rgba(244,235,225,0.58)",
+    inkFaint: "rgba(244,235,225,0.12)",
+    heatOff: "rgba(244,235,225,0.06)",
+    pngBg: "#1B1A19",
+    heroFrom: "#0C0B0A",
+    heroTo: "#000000",
+    footerInk: "#000000",
+    creamOn: "#FFFDF9",
+    creamDim: "rgba(255,251,245,0.72)",
+    creamFaint: "rgba(255,251,245,0.16)",
+  },
+};
+
+// --- brand accent per provider + mode ----------------------------------------
+type Accent = Pick<
+  Palette,
+  "accent" | "accentDeep" | "accentSoft" | "accentLight" | "accentOnRgb" | "fam" | "famFallback"
+>;
+
+const ACCENT: Record<Provider, Record<ThemeName, Accent>> = {
+  claude: {
+    light: {
+      accent: "#D97757",
+      accentDeep: "#C2562F",
+      accentSoft: "rgba(217,119,87,0.10)",
+      accentLight: "#F0B49A",
+      accentOnRgb: "217,119,87",
+      fam: ["#D97757", "#F0B49A", "#8A4B2F", "#C2562F", "#E9A488"],
+      famFallback: "#C2562F",
+    },
+    dark: {
+      accent: "#E08A66",
+      accentDeep: "#C2562F",
+      accentSoft: "rgba(224,138,102,0.14)",
+      accentLight: "#F2BFA4",
+      accentOnRgb: "224,138,102",
+      fam: ["#E08A66", "#F2BFA4", "#D69B72", "#C2562F", "#E9A488"],
+      famFallback: "#C2562F",
+    },
+  },
+  codex: {
+    light: {
+      accent: "#38BDF8", // electric cyan
+      accentDeep: "#0369A1", // legible cyan-blue for text on cream
+      accentSoft: "rgba(56,189,248,0.10)",
+      accentLight: "#7DD3FC",
+      accentOnRgb: "56,189,248",
+      fam: ["#38BDF8", "#0EA5E9", "#7DD3FC", "#0369A1", "#22D3EE"],
+      famFallback: "#0284C7",
+    },
+    dark: {
+      accent: "#56C7F7",
+      accentDeep: "#0EA5E9",
+      accentSoft: "rgba(86,199,247,0.14)",
+      accentLight: "#7DD3FC",
+      accentOnRgb: "86,199,247",
+      fam: ["#56C7F7", "#0EA5E9", "#7DD3FC", "#38BDF8", "#22D3EE"],
+      famFallback: "#0EA5E9",
+    },
+  },
+};
+
+/** Build the palette for a given agent + light/dark mode. Black is the main color; accent is the brand tint. */
+export function themeFor(provider: Provider, mode: ThemeName): Palette {
+  return { provider, ...BASE[mode], ...ACCENT[provider][mode] };
+}
+
+// Claude palettes kept as named exports (sample rendering, tests, back-compat).
+export const LIGHT: Palette = themeFor("claude", "light");
+export const DARK: Palette = themeFor("claude", "dark");
 
 export const FONT = {
   display: "Poppins",

@@ -4,9 +4,11 @@ import type { PriceMap, UsageRecord } from "../../src/types.js";
 export function makeRecord(p: Partial<UsageRecord> = {}): UsageRecord {
   return {
     ts: Date.parse("2026-05-01T12:00:00.000Z"),
+    provider: "claude",
     model: "claude-opus-4-7",
     input: 0,
     output: 0,
+    reasoning: 0,
     cacheCreate: 0,
     cacheCreate5m: 0,
     cacheCreate1h: 0,
