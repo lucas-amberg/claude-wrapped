@@ -20,22 +20,22 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://claude-wrapped-zeta
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Claude Wrapped — Your month in Claude Code, beautifully wrapped",
+  title: "Vibe Coding Wrapped — Your month in Claude Code + Codex, beautifully wrapped",
   description:
-    "A Spotify-Wrapped-style card of your Claude Code usage — total tokens, spend, cache hit rate, top projects, model split, an activity heatmap and your coding persona. Generated from your local logs, nothing uploaded.",
-  keywords: ["claude", "claude code", "wrapped", "tokens", "usage", "cli"],
+    "A Spotify-Wrapped-style card of your Claude Code and Codex usage — total tokens, spend, cache hit rate, top projects, model split, activity heatmaps and your coding persona. Generated from your local logs, nothing uploaded.",
+  keywords: ["claude", "claude code", "codex", "openai", "gpt", "wrapped", "tokens", "usage", "cli"],
   authors: [{ name: "Lucas Amberg" }],
   openGraph: {
-    title: "Claude Wrapped",
-    description: "Your month in Claude Code, beautifully wrapped — straight from your local logs.",
+    title: "Vibe Coding Wrapped",
+    description: "Your month across Claude Code and Codex, beautifully wrapped — straight from your local logs.",
     url: siteUrl,
-    siteName: "Claude Wrapped",
+    siteName: "Vibe Coding Wrapped",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Claude Wrapped",
-    description: "Your month in Claude Code, beautifully wrapped.",
+    title: "Vibe Coding Wrapped",
+    description: "Your month across Claude Code and Codex, beautifully wrapped.",
   },
 };
 

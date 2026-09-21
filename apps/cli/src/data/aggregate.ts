@@ -1,6 +1,7 @@
 import type {
   ModelStat,
   PriceMap,
+  Provider,
   ProjectStat,
   UsageRecord,
   WrappedStats,
@@ -25,7 +26,12 @@ const MONTH_NAMES = [
 /** Derive a human project name from a cwd, rolling worktrees up to the parent. */
 export function projectName(cwd: string): string {
   if (!cwd) return "unknown";
-  // Strip a worktree segment that lives inside the project (".../.claude/worktrees/<slug>").
+  // Codex worktrees live UNDER ~/.codex (~/.codex/worktrees/<hash>/<project>/…),
+  // so the project is the segment AFTER the hash — not the home dir before it.
+  const codexWt = cwd.match(/\/\.codex\/worktrees\/[^/]+\/([^/]+)/);
+  if (codexWt) return codexWt[1];
+  // Claude worktrees live INSIDE the project (.../.claude/worktrees/<slug>) —
+  // roll up to the project dir before them.
   let p = cwd.split(/\/\.claude\/worktrees\//)[0];
   p = p.split(/\/\.worktrees\//)[0];
   let base = p.split("/").filter(Boolean).pop() || p;
@@ -34,7 +40,17 @@ export function projectName(cwd: string): string {
   return base || "unknown";
 }
 
-export function modelFamily(model: string): string {
+/** "gpt-5.6-sol" -> "GPT-5.6 Sol", "gpt-5-codex" -> "GPT-5 Codex". */
+function codexFamily(model: string): string {
+  return model
+    .trim()
+    .replace(/^gpt-/i, "GPT-")
+    // spaced Title Case for trailing -word suffixes ("-codex", "-sol", "-max")
+    .replace(/-([a-z][a-z0-9]*)/gi, (_, w: string) => " " + w.charAt(0).toUpperCase() + w.slice(1));
+}
+
+export function modelFamily(model: string, provider: Provider = "claude"): string {
+  if (provider === "codex") return codexFamily(model);
   const m = model.toLowerCase();
   if (m.includes("opus")) return "Opus";
   if (m.includes("sonnet")) return "Sonnet";
@@ -72,9 +88,10 @@ function longestStreak(days: Set<string>): number {
 export function aggregate(
   records: UsageRecord[],
   pricing: PriceMap,
-  opts: { month: string; timezone: string; topProjects?: number },
+  opts: { month: string; timezone: string; topProjects?: number; provider?: Provider },
 ): WrappedStats {
   const topN = opts.topProjects ?? 5;
+  const provider = opts.provider ?? records[0]?.provider ?? "claude";
   const [yearStr, monthStr] = opts.month.split("-");
   const year = parseInt(yearStr, 10);
   const monthIdx = parseInt(monthStr, 10) - 1;
@@ -82,6 +99,7 @@ export function aggregate(
   const totals = {
     input: 0,
     output: 0,
+    reasoning: 0,
     cacheCreate: 0,
     cacheRead: 0,
     tokens: 0,
@@ -107,6 +125,7 @@ export function aggregate(
 
     totals.input += r.input;
     totals.output += r.output;
+    totals.reasoning += r.reasoning;
     totals.cacheCreate += r.cacheCreate;
     totals.cacheRead += r.cacheRead;
     totals.tokens += tokens;
@@ -115,7 +134,7 @@ export function aggregate(
     cache5m += r.cacheCreate5m;
     cache1h += r.cacheCreate1h;
 
-    const fam = modelFamily(r.model);
+    const fam = modelFamily(r.model, provider);
     const f = familyAgg.get(fam) ?? { tokens: 0, cost: 0 };
     f.tokens += tokens;
     f.cost += cost;
@@ -180,6 +199,7 @@ export function aggregate(
   const { persona: personaLabel, personaEmoji } = persona(peakHour);
 
   return {
+    provider,
     month: opts.month,
     monthLabel: `${MONTH_NAMES[monthIdx] ?? ""} ${year}`,
     timezone: opts.timezone,

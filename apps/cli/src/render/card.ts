@@ -1,8 +1,8 @@
 import satori from "satori";
 import { parse, ELEMENT_NODE, TEXT_NODE } from "ultrahtml";
 import type { WrappedStats } from "../types.js";
-import { buildCardMarkup } from "./card-markup.js";
-import { WIDTH, HEIGHT, LIGHT, type Palette } from "./theme.js";
+import { buildCardMarkup, buildCombinedMarkup } from "./card-markup.js";
+import { WIDTH, HEIGHT, COMBINED_WIDTH, LIGHT, type Palette } from "./theme.js";
 
 export interface FontSpec {
   name: string;
@@ -84,7 +84,7 @@ export function htmlToVNode(markup: string): VNode {
   return convert(root);
 }
 
-/** Render the wrapped card to an SVG string via Satori. */
+/** Render a single-agent wrapped card to an SVG string via Satori. */
 export async function renderSvg(
   stats: WrappedStats,
   fonts: FontSpec[],
@@ -94,6 +94,24 @@ export async function renderSvg(
   return satori(vnode as Parameters<typeof satori>[0], {
     width: WIDTH,
     height: HEIGHT,
+    fonts: fonts as Parameters<typeof satori>[1]["fonts"],
+  });
+}
+
+/**
+ * Render the combined "Vibe Coding Wrapped" card (Claude + Codex). Passes width
+ * only so Satori auto-heights to the content, then resvg matches that height.
+ */
+export async function renderCombinedSvg(
+  claude: WrappedStats,
+  codex: WrappedStats,
+  fonts: FontSpec[],
+  claudeTheme: Palette,
+  codexTheme: Palette,
+): Promise<string> {
+  const vnode = htmlToVNode(buildCombinedMarkup(claude, codex, claudeTheme, codexTheme));
+  return satori(vnode as Parameters<typeof satori>[0], {
+    width: COMBINED_WIDTH,
     fonts: fonts as Parameters<typeof satori>[1]["fonts"],
   });
 }

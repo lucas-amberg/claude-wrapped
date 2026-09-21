@@ -1,4 +1,4 @@
-import { Logo } from "./icons";
+import { Logo, CodexLogo } from "./icons";
 import { REPO_URL, NPM_URL } from "@/lib/content";
 
 export function Footer() {
@@ -8,11 +8,15 @@ export function Footer() {
         <div className="footer-top">
           <div>
             <div className="footer-brand">
-              <Logo className="logo" />
-              Claude Wrapped
+              <span className="brand-marks" aria-hidden>
+                <Logo className="logo" />
+                <CodexLogo className="logo logo-codex" />
+              </span>
+              Vibe Coding Wrapped
             </div>
             <p className="footer-tag">
-              Your month in Claude Code, beautifully wrapped — straight from your local logs.
+              Your month of vibe coding across Claude Code and Codex, beautifully wrapped —
+              straight from your local logs.
             </p>
           </div>
           <div className="footer-cols">
@@ -32,7 +36,7 @@ export function Footer() {
           </div>
         </div>
         <div className="footer-bottom">
-          <span>Claude logo © Anthropic · Fonts under the SIL Open Font License</span>
+          <span>Claude logo © Anthropic · OpenAI logo © OpenAI · Fonts under the SIL Open Font License</span>
           <span>Built with Claude Code</span>
         </div>
       </div>

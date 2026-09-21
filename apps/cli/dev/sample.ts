@@ -11,12 +11,12 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { renderSvg, type FontSpec } from "../src/render/card.js";
+import { renderSvg, renderCombinedSvg, type FontSpec } from "../src/render/card.js";
 import { svgToPng } from "../src/render/png.js";
 import { buildCardMarkup } from "../src/render/card-markup.js";
 import { themeFor, LIGHT, DARK, type Palette } from "../src/render/theme.js";
 import { FONT_FILES } from "../src/render/font-manifest.js";
-import { SAMPLE_STATS } from "./sample-data.js";
+import { SAMPLE_STATS, SAMPLE_STATS_CODEX } from "./sample-data.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, "..");
@@ -44,19 +44,40 @@ async function renderTo(theme: Palette, ...outPaths: string[]): Promise<number> 
   return png.length;
 }
 
+async function renderCombinedTo(mode: "light" | "dark", ...outPaths: string[]): Promise<number> {
+  const svg = await renderCombinedSvg(
+    SAMPLE_STATS,
+    SAMPLE_STATS_CODEX,
+    fonts,
+    themeFor("claude", mode),
+    themeFor("codex", mode),
+  );
+  const png = svgToPng(svg, 2, themeFor("claude", mode).pngBg);
+  for (const p of outPaths) writeFileSync(p, png);
+  return png.length;
+}
+
 const t0 = Date.now();
+// Standalone Claude cards → docs/sample*.png, mirrored byte-identically to the
+// website's public/ (the cross-app design contract).
 const lightBytes = await renderTo(
-  themeFor("light"),
+  themeFor("claude", "light"),
   join(root, "docs/sample.png"),
   join(web, "sample.png"),
 );
 const darkBytes = await renderTo(
-  themeFor("dark"),
+  themeFor("claude", "dark"),
   join(root, "docs/sample-dark.png"),
   join(web, "sample-dark.png"),
 );
+// Standalone Codex card (README).
+await renderTo(themeFor("codex", "light"), join(root, "docs/sample-codex.png"));
+// Combined "Vibe Coding Wrapped" flagship — README hero (docs) + website hero (public).
+await renderCombinedTo("light", join(root, "docs/sample-combined.png"), join(web, "sample-combined.png"));
+await renderCombinedTo("dark", join(root, "docs/sample-combined-dark.png"), join(web, "sample-combined-dark.png"));
 console.log(
-  `wrote docs/sample.png + docs/sample-dark.png (${lightBytes} + ${darkBytes} bytes), mirrored to apps/web/public/, in ${Date.now() - t0}ms`,
+  `wrote docs/sample*.png (claude ${lightBytes}+${darkBytes}B, codex, combined light+dark), ` +
+    `mirrored claude pair + combined pair to apps/web/public/, in ${Date.now() - t0}ms`,
 );
 
 // --- side-by-side HTML preview (fonts base64-inlined, like dev/mockup.ts) ----

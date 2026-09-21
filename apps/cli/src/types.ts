@@ -1,9 +1,14 @@
+/** Which coding agent a record came from. */
+export type Provider = "claude" | "codex";
+
 /** A single normalized assistant usage record (post-dedup, in target month). */
 export interface UsageRecord {
   ts: number; // epoch ms
-  model: string; // raw message.model, e.g. "claude-opus-4-7"
-  input: number;
-  output: number;
+  provider: Provider; // "claude" (Claude Code) or "codex" (Codex CLI)
+  model: string; // raw message.model, e.g. "claude-opus-4-7" / "gpt-5.6-sol"
+  input: number; // NON-cached input tokens (Codex splits cached out at load)
+  output: number; // includes reasoning tokens
+  reasoning: number; // reasoning output tokens (Codex only; 0 for Claude)
   cacheCreate: number; // total cache_creation_input_tokens
   cacheCreate5m: number;
   cacheCreate1h: number;
@@ -31,6 +36,7 @@ export interface ProjectStat {
 }
 
 export interface WrappedStats {
+  provider: Provider; // which agent these stats summarize
   month: string; // "2026-05"
   monthLabel: string; // "MAY 2026"
   timezone: string;
@@ -39,6 +45,7 @@ export interface WrappedStats {
   totals: {
     input: number;
     output: number;
+    reasoning: number; // reasoning output tokens (Codex)
     cacheCreate: number;
     cacheRead: number;
     tokens: number;

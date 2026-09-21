@@ -51,6 +51,7 @@ const MODEL_COSTS = { Opus: 1036, Sonnet: 400, Haiku: 44 };
 const TOTAL_COST = MODEL_COSTS.Opus + MODEL_COSTS.Sonnet + MODEL_COSTS.Haiku; // 1480
 
 export const SAMPLE_STATS: WrappedStats = {
+  provider: "claude",
   month: "2026-05",
   monthLabel: "MAY 2026",
   timezone: "America/New_York",
@@ -59,6 +60,7 @@ export const SAMPLE_STATS: WrappedStats = {
   totals: {
     input: TOK.input,
     output: TOK.output,
+    reasoning: 0,
     cacheCreate: TOK.cacheCreate,
     cacheRead: TOK.cacheRead,
     tokens: TOTAL_TOKENS,
@@ -116,4 +118,76 @@ export const SAMPLE_STATS: WrappedStats = {
 
   cache5m: 86_000_000,
   cache1h: 9_000_000,
+};
+
+// --- fictional Codex profile (daylight coder, GPT-5.x) -----------------------
+// A midday-peaking curve so the two heatmaps read distinctly in the combined card.
+const HOUR_CURVE_CX = [
+  2, 1, 1, 1, 1, 2, 6, 18, //           00–07
+  38, 62, 84, 96, 88, 100, 92, 80, //   08–15  midday peak at 13
+  70, 54, 40, 30, 22, 16, 10, 5, //     16–23
+];
+const HEAT_CX = (() => {
+  const counts: number[][] = [];
+  for (let d = 0; d < 7; d++) {
+    const rowVals: number[] = [];
+    for (let h = 0; h < 24; h++) {
+      const base = HOUR_CURVE_CX[h] * DOW_WEIGHT[d];
+      const jitter = (((d * 17 + h * 29) % 13) - 6) / 40;
+      rowVals.push(Math.max(0, Math.round(base * (1 + jitter))));
+    }
+    counts.push(rowVals);
+  }
+  const max = Math.max(...counts.flat());
+  return { counts, max, normalized: counts.map((r) => r.map((c) => c / max)) };
+})();
+
+const CX_MODEL_COSTS = { "GPT-5.6 Sol": 512, "GPT-5.6 Luna": 214, "GPT-5.5": 58 };
+const CX_TOTAL_COST = CX_MODEL_COSTS["GPT-5.6 Sol"] + CX_MODEL_COSTS["GPT-5.6 Luna"] + CX_MODEL_COSTS["GPT-5.5"];
+
+export const SAMPLE_STATS_CODEX: WrappedStats = {
+  provider: "codex",
+  month: "2026-05",
+  monthLabel: "MAY 2026",
+  timezone: "America/New_York",
+  generatedAt: "2026-05-31T22:00:00-04:00",
+  totals: {
+    input: 9_000_000,
+    output: 41_000_000,
+    reasoning: 12_400_000,
+    cacheCreate: 21_000_000,
+    cacheRead: 940_000_000,
+    tokens: 9_000_000 + 41_000_000 + 21_000_000 + 940_000_000,
+    cost: CX_TOTAL_COST,
+    messages: 9_820,
+    cacheHitRate: 940_000_000 / (940_000_000 + 21_000_000 + 9_000_000),
+  },
+  models: [
+    { model: "GPT-5.6 Sol", tokens: 640_000_000, cost: CX_MODEL_COSTS["GPT-5.6 Sol"], share: CX_MODEL_COSTS["GPT-5.6 Sol"] / CX_TOTAL_COST },
+    { model: "GPT-5.6 Luna", tokens: 300_000_000, cost: CX_MODEL_COSTS["GPT-5.6 Luna"], share: CX_MODEL_COSTS["GPT-5.6 Luna"] / CX_TOTAL_COST },
+    { model: "GPT-5.5", tokens: 71_000_000, cost: CX_MODEL_COSTS["GPT-5.5"], share: CX_MODEL_COSTS["GPT-5.5"] / CX_TOTAL_COST },
+  ],
+  projects: [
+    { name: "peptrac-app", tokens: 430_000_000, cost: 291, messages: 3900 },
+    { name: "rot-block-extension", tokens: 268_000_000, cost: 188, messages: 2600 },
+    { name: "workout-qa", tokens: 142_000_000, cost: 96, messages: 1700 },
+    { name: "skysight", tokens: 78_000_000, cost: 52, messages: 980 },
+    { name: "pets", tokens: 24_000_000, cost: 17, messages: 640 },
+  ],
+  time: {
+    peakHour: 13,
+    peakHourCount: HEAT_CX.counts.reduce((s, r) => s + r[13], 0),
+    persona: "Daylight Coder",
+    personaEmoji: "☀️",
+    busiestDay: "2026-05-18",
+    busiestDayTokens: 71_000_000,
+    longestStreakDays: 8,
+    activeDays: 21,
+    daysInMonth: 31,
+  },
+  heatmap: HEAT_CX.normalized,
+  heatmapCounts: HEAT_CX.counts,
+  heatmapMax: HEAT_CX.max,
+  cache5m: 0,
+  cache1h: 0,
 };

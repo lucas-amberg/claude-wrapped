@@ -5,7 +5,7 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 import type { UsageRecord } from "../types.js";
 
-const WEEKDAY_INDEX: Record<string, number> = {
+export const WEEKDAY_INDEX: Record<string, number> = {
   Mon: 0,
   Tue: 1,
   Wed: 2,
@@ -15,13 +15,16 @@ const WEEKDAY_INDEX: Record<string, number> = {
   Sun: 6,
 };
 
+/** Local date/time parts for an epoch, bucketed in a target IANA timezone. */
+export type LocalParts = { ym: string; day: string; hour: number; dow: number };
+
 export function resolveProjectsDir(): string {
   const base = process.env.CLAUDE_CONFIG_DIR || join(homedir(), ".claude");
   return join(base, "projects");
 }
 
 /** Recursively collect every *.jsonl path under `dir`. */
-async function findJsonl(dir: string): Promise<string[]> {
+export async function findJsonl(dir: string): Promise<string[]> {
   const out: string[] = [];
   let entries;
   try {
@@ -41,7 +44,7 @@ async function findJsonl(dir: string): Promise<string[]> {
 }
 
 /** Local date/time parts for an epoch in a given IANA timezone. */
-function makeLocalParts(timezone: string) {
+export function makeLocalParts(timezone: string): (ms: number) => LocalParts {
   const fmt = new Intl.DateTimeFormat("en-US", {
     timeZone: timezone,
     year: "numeric",
@@ -156,9 +159,11 @@ async function streamFile(
     const cc = usage.cache_creation;
     out.push({
       ts,
+      provider: "claude",
       model,
       input: usage.input_tokens ?? 0,
       output: usage.output_tokens ?? 0,
+      reasoning: 0,
       cacheCreate: usage.cache_creation_input_tokens ?? 0,
       cacheCreate5m: cc?.ephemeral_5m_input_tokens ?? 0,
       cacheCreate1h: cc?.ephemeral_1h_input_tokens ?? 0,
@@ -173,7 +178,7 @@ async function streamFile(
 }
 
 /** Simple bounded-concurrency map. */
-async function pool<T>(items: T[], limit: number, fn: (item: T) => Promise<void>) {
+export async function pool<T>(items: T[], limit: number, fn: (item: T) => Promise<void>) {
   let i = 0;
   const workers = Array.from({ length: Math.min(limit, items.length) }, async () => {
     while (i < items.length) {
