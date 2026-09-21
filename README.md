@@ -1,10 +1,11 @@
 <div align="center">
 
-# Claude Wrapped
+# Vibe Coding Wrapped
 
-A **Spotify-Wrapped-style** image of your Claude Code usage — total tokens, spend, cache hit
-rate, top projects, model split, an activity heatmap, and your "coding persona" — rendered from
-your local logs, nothing uploaded.
+A **Spotify-Wrapped-style** image of your AI coding usage — for **Claude Code** *and* **Codex**.
+Total tokens, spend, cache hit rate, top projects, model split, activity heatmaps, and your
+"coding persona" — rendered from your local logs, nothing uploaded. The default is one combined
+card; `--claude` / `--codex` render a standalone card for either.
 
 <!-- status: live npm + repo/social -->
 [![npm version](https://img.shields.io/npm/v/claude-wrapped-cli?style=for-the-badge&logo=npm&logoColor=white&label=npm&color=CB3837)](https://www.npmjs.com/package/claude-wrapped-cli)
@@ -26,10 +27,14 @@ your local logs, nothing uploaded.
   <a href="https://claude-wrapped-zeta.vercel.app"><b>🌐 View the site →</b></a>
 </p>
  
-<img src="apps/cli/docs/sample.png" width="49%" alt="Claude Wrapped sample — light theme" />
-<img src="apps/cli/docs/sample-dark.png" width="49%" alt="Claude Wrapped sample — dark theme" />
+<img src="apps/cli/docs/sample-combined.png" width="70%" alt="Vibe Coding Wrapped — combined Claude + Codex card" />
 
-<sub>Sample cards (illustrative data) — default and <code>--dark</code> themes.</sub>
+<sub>The default: one combined card (illustrative data).</sub>
+
+<img src="apps/cli/docs/sample.png" width="42%" alt="Claude Wrapped — standalone card" />
+<img src="apps/cli/docs/sample-codex.png" width="42%" alt="Codex Wrapped — standalone card" />
+
+<sub>Standalone cards via <code>--claude</code> / <code>--codex</code> (each also has a <code>--dark</code> theme).</sub>
 
 </div>
 
@@ -39,8 +44,10 @@ marketing/documentation website that shows it off.
 ## Try the CLI
 
 ```bash
-npx claude-wrapped-cli            # current month → ~/Desktop, then opens it
-npx claude-wrapped-cli --dark     # warm near-black dark theme
+npx claude-wrapped-cli            # both agents → one combined card, then opens it
+npx claude-wrapped-cli --claude   # Claude Code only (standalone)
+npx claude-wrapped-cli --codex    # Codex only (standalone)
+npx claude-wrapped-cli --dark     # near-black dark theme
 ```
 
 Full CLI documentation — every flag and how it works — lives in
@@ -97,4 +104,4 @@ at Claude Code usage in the first place. Both read the same LiteLLM pricing sour
 
 ## License
 
-MIT. Claude logo © Anthropic; bundled fonts under the SIL Open Font License.
+MIT. Claude logo © Anthropic; OpenAI logo © OpenAI; bundled fonts under the SIL Open Font License.

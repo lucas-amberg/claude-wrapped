@@ -148,6 +148,9 @@ cli
       jsonOut = one.stats; // flat single-provider stats (back-compat)
     }
 
+    // --json emits machine output on stdout, so route the human summary to
+    // stderr in that case; otherwise print it to stdout so the results are
+    // plainly visible in the terminal.
     if (opts.json) process.stdout.write(JSON.stringify(jsonOut, null, 2) + "\n");
 
     const png = svgToPng(svg, scale, pngBg);
@@ -160,11 +163,11 @@ cli
     if (claude) lines.push(`  ▸ Claude\n${summarize(claude.stats)}`);
     if (codex) lines.push(`  ▸ Codex\n${summarize(codex.stats)}`);
     lines.push(`     → saved to ${output}\n`);
-    console.error(lines.join("\n"));
+    (opts.json ? console.error : console.log)(lines.join("\n"));
 
     if (opts.open !== false) {
       await open(output).catch(() => {
-        /* opening is best-effort */
+        console.error(`  (couldn't auto-open — open it manually: ${output})\n`);
       });
     }
   });

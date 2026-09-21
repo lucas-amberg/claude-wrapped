@@ -35,10 +35,14 @@ const fonts: FontSpec[] = fontData.map(({ family, data, weight }) => ({
   style: "normal",
 }));
 
-// Render once per theme, then write the SAME buffer to every target path so the
-// docs copy and the website's public copy stay byte-identical.
-async function renderTo(theme: Palette, ...outPaths: string[]): Promise<number> {
-  const svg = await renderSvg(SAMPLE_STATS, fonts, theme);
+// Render once, then write the SAME buffer to every target path so the docs copy
+// and the website's public copy stay byte-identical.
+async function renderTo(
+  stats: typeof SAMPLE_STATS,
+  theme: Palette,
+  ...outPaths: string[]
+): Promise<number> {
+  const svg = await renderSvg(stats, fonts, theme);
   const png = svgToPng(svg, 2, theme.pngBg);
   for (const p of outPaths) writeFileSync(p, png);
   return png.length;
@@ -61,17 +65,19 @@ const t0 = Date.now();
 // Standalone Claude cards → docs/sample*.png, mirrored byte-identically to the
 // website's public/ (the cross-app design contract).
 const lightBytes = await renderTo(
+  SAMPLE_STATS,
   themeFor("claude", "light"),
   join(root, "docs/sample.png"),
   join(web, "sample.png"),
 );
 const darkBytes = await renderTo(
+  SAMPLE_STATS,
   themeFor("claude", "dark"),
   join(root, "docs/sample-dark.png"),
   join(web, "sample-dark.png"),
 );
-// Standalone Codex card (README).
-await renderTo(themeFor("codex", "light"), join(root, "docs/sample-codex.png"));
+// Standalone Codex card (README) — rendered from the Codex fixture, not Claude's.
+await renderTo(SAMPLE_STATS_CODEX, themeFor("codex", "light"), join(root, "docs/sample-codex.png"));
 // Combined "Vibe Coding Wrapped" flagship — README hero (docs) + website hero (public).
 await renderCombinedTo("light", join(root, "docs/sample-combined.png"), join(web, "sample-combined.png"));
 await renderCombinedTo("dark", join(root, "docs/sample-combined-dark.png"), join(web, "sample-combined-dark.png"));

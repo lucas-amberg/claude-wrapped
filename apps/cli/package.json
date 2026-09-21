@@ -1,6 +1,6 @@
 {
   "name": "claude-wrapped-cli",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Spotify-Wrapped-style summary image of your Claude Code and Codex usage.",
   "author": "Lucas Amberg",
   "homepage": "https://claude-wrapped-zeta.vercel.app",

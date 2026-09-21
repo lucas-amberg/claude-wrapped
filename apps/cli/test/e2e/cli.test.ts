@@ -57,9 +57,10 @@ describe("e2e: claude-wrapped CLI (spawned dist/cli.js)", () => {
     const png = readFileSync(out);
     expect(isPng(png)).toBe(true);
     expect(pngSize(png)).toEqual(SCALE2);
-    expect(stderr).toMatch(/Claude Wrapped/);
-    expect(stderr).toMatch(/saved to/);
-    expect(stdout.trim()).toBe("");
+    // Without --json the human summary is printed to stdout so it's plainly visible.
+    expect(stdout).toMatch(/Claude Wrapped/);
+    expect(stdout).toMatch(/saved to/);
+    expect(stderr).toBe("");
   }, 30_000);
 
   it("--dark selects the dark theme (raster differs from light)", () => {
@@ -118,11 +119,11 @@ describe("e2e: claude-wrapped CLI (spawned dist/cli.js)", () => {
   }, 30_000);
 
   it("--claude forces the Claude card even when Codex data exists", () => {
-    const { status, stderr } = render(["--month", MONTH, "--claude"], bothEnv);
+    const { status, stdout } = render(["--month", MONTH, "--claude"], bothEnv);
     expect(status).toBe(0);
-    expect(stderr).toMatch(/Claude Wrapped/);
-    expect(stderr).not.toMatch(/Vibe Coding Wrapped/);
-    expect(stderr).not.toMatch(/Codex Wrapped/);
+    expect(stdout).toMatch(/Claude Wrapped/);
+    expect(stdout).not.toMatch(/Vibe Coding Wrapped/);
+    expect(stdout).not.toMatch(/Codex Wrapped/);
   }, 30_000);
 
   it("defaults the combined output to ~/Desktop/vibe-coding-wrapped-<month>.png", () => {
