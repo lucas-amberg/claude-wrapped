@@ -168,11 +168,11 @@ export const SAMPLE_STATS_CODEX: WrappedStats = {
     { model: "GPT-5.5", tokens: 71_000_000, cost: CX_MODEL_COSTS["GPT-5.5"], share: CX_MODEL_COSTS["GPT-5.5"] / CX_TOTAL_COST },
   ],
   projects: [
-    { name: "peptrac-app", tokens: 430_000_000, cost: 291, messages: 3900 },
-    { name: "rot-block-extension", tokens: 268_000_000, cost: 188, messages: 2600 },
-    { name: "workout-qa", tokens: 142_000_000, cost: 96, messages: 1700 },
-    { name: "skysight", tokens: 78_000_000, cost: 52, messages: 980 },
-    { name: "pets", tokens: 24_000_000, cost: 17, messages: 640 },
+    { name: "orbit-cli", tokens: 430_000_000, cost: 291, messages: 3900 },
+    { name: "harbor-api", tokens: 268_000_000, cost: 188, messages: 2600 },
+    { name: "vector-notes", tokens: 142_000_000, cost: 96, messages: 1700 },
+    { name: "glyph-ui", tokens: 78_000_000, cost: 52, messages: 980 },
+    { name: "sandbox", tokens: 24_000_000, cost: 17, messages: 640 },
   ],
   time: {
     peakHour: 13,

@@ -190,8 +190,12 @@ a {
   align-items: center;
 }
 .logo-codex {
-  color: var(--codex);
   margin-left: -6px;
+}
+/* Beats `.brand .logo` / `.footer-brand .logo` (both 0,2,0) regardless of source
+   order, so the Codex mark keeps its cyan accent in the nav and footer lockups. */
+.brand-marks .logo.logo-codex {
+  color: var(--codex);
 }
 .nav-links {
   display: flex;
